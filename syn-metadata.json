@@ -1,0 +1,14 @@
+{
+  "name": "Synergy",
+  "symbol": "SYN",
+  "description": "Synergy (SYN) — the token of Proof of Observation. Earned by browser miners searching Satoshi's nonce pattern. Self-limiting supply tied to Bitcoin consensus. The coin that researches Bitcoin lives on Bitcoin's neighbor chain.",
+  "image": "https://raw.githubusercontent.com/Musti12D/EarnOS-Portal/master/syn-logo.svg",
+  "external_url": "https://earnos-portal.vercel.app",
+  "attributes": [
+    { "trait_type": "Consensus", "value": "Proof of Observation" },
+    { "trait_type": "Supply",    "value": "21,000,000" },
+    { "trait_type": "Decimals",  "value": "8" },
+    { "trait_type": "Network",   "value": "Solana" },
+    { "trait_type": "Origin",    "value": "EarnOS Cosmos" }
+  ]
+}
