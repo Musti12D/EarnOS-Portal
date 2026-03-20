@@ -332,12 +332,24 @@ function toggleMine() {
   else stopMining();
 }
 
-function startMining() {
+async function startMining() {
   mining = true;
   document.getElementById('mine-btn').className = 'mine-btn stop';
   document.getElementById('mine-btn').textContent = '■ Stop Mining';
   document.getElementById('mine-dot').className = 'dot green pulse';
   document.getElementById('mine-lbl').textContent = 'Mining...';
+
+  // Freie Zone vom Server holen — keine interne Bias (jeder Miner bekommt seine eigene)
+  try {
+    const r = await fetch(API_URL + '/miner/zone');
+    const hint = await r.json();
+    updateZoneHint(hint);
+    const src = hint.quelle === 'FREIE_ERKUNDUNG' ? '(free exploration)' : '(cosmos guided)';
+    addUniLine('Zone assigned: ' + hint.zone + ' ' + src);
+  } catch(_) {
+    addUniLine('Zone fallback: exploring randomly.');
+    updateZoneHint({ zone: Math.floor(Math.random() * 16) });
+  }
 
   worker = new Worker('mine-worker.js');
   worker.onmessage = onWorkerMsg;
@@ -424,40 +436,50 @@ async function sendBatch(nm, zeros) {
   document.getElementById('batch-count').textContent = batchCount;
 
   const beyondRandom = zeros >= 7;
-  const reward       = beyondRandom ? 0.0001 : 0.000001;
-  synergy += reward;
+  let reward = 0;
+  let grund  = 'pending...';
 
+  // Optimistic UI update (will be corrected by server response)
+  addBatchItem({ nonce: nm.nonce, zone: nm.zone, zeros, hash: nm.hash, beyondRandom, reward: 0, grund: 'sending...' });
+
+  // Send to EarnOS server — mit Auth-Token für Synergy-Buchung
+  try {
+    const token = localStorage.getItem('earnos_token') || '';
+    const r = await fetch(API_URL + '/miner/batch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        userId:     user?.userId || 'anon',
+        nonce:      nm.nonce,
+        zone:       nm.zone,
+        zeros,
+        hashSample: nm.hash,
+        beyondRandom,
+        ts:         Date.now(),
+      }),
+    });
+    const d = await r.json();
+    reward = d.reward || 0;
+    grund  = d.grund  || (d.ok ? 'ok' : 'rejected');
+  } catch(_) {
+    grund = 'offline';
+  }
+
+  // Update synergy display with real reward
+  synergy += reward;
   document.getElementById('reward-big').textContent   = synergy.toFixed(6);
   document.getElementById('reward-badge').textContent = synergy.toFixed(4) + ' SYN';
   document.getElementById('syn-val').textContent      = synergy.toFixed(6) + ' SYN';
 
-  // Add to batch log
-  addBatchItem({
-    nonce:       nm.nonce,
-    zone:        nm.zone,
-    zeros,
-    hash:        nm.hash,
-    beyondRandom,
-    reward,
-  });
-
-  // Send to EarnOS server
-  try {
-    await fetch(API_URL + '/miner/batch', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId:    user?.id || 'anon',
-        nonce:     nm.nonce,
-        zone:      nm.zone,
-        zeros,
-        hashSample: nm.hash,
-        beyondRandom,
-        ts:        Date.now(),
-      }),
-    });
-  } catch(_) {
-    // Server not reachable — batch still counted locally
+  // Update the batch item we already added (first child = newest)
+  const log = document.getElementById('batch-log');
+  const first = log.firstChild;
+  if (first && first.classList?.contains('batch-item')) {
+    const rewardEl = first.querySelector('.batch-reward');
+    if (rewardEl) rewardEl.textContent = '+' + reward.toFixed(8) + ' SYN · ' + grund;
   }
 }
 
@@ -482,7 +504,7 @@ function addBatchItem(b) {
     </div>
     <div class="batch-detail">
       Nonce: ${b.nonce} | ${b.hash}<br>
-      Reward: <span style="color:var(--gold)">+${b.reward.toFixed(6)} SYN</span>
+      Reward: <span class="batch-reward" style="color:var(--gold)">+${b.reward.toFixed(8)} SYN · ${b.grund || ''}</span>
     </div>
   `;
 
