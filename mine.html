@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnOS — Mining Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* Topbar extras */
+.topbar-user {
+  font-size: 0.65rem; color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+}
+
+.mine-btn {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; padding: 0.35rem 1rem;
+  border-radius: 5px; border: none; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0.05em;
+}
+.mine-btn.start { background: var(--green); color: #000; }
+.mine-btn.stop  { background: var(--red);   color: #fff; }
+
+/* 2×2 grid */
+.mine-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}
+
+/* Hashrate number */
+.hps-big {
+  font-size: 2.2rem; font-weight: 700;
+  color: var(--accent); line-height: 1;
+}
+.hps-unit { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; }
+
+/* Zone display */
+.zone-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.zone-range { font-size: 0.72rem; color: var(--accent); }
+
+/* Near-miss flash */
+@keyframes flash {
+  0%   { background: rgba(245,158,11,0.3); }
+  100% { background: transparent; }
+}
+.flash { animation: flash 1.5s ease; }
+</style>
+</head>
+<body>
+
+<div class="cosmic-bg"></div>
+
+<div class="dashboard">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-logo">EARNOS</div>
+    <div style="margin-left:1rem">
+      <span class="status-pill">
+        <span class="dot" id="cosmos-dot"></span>
+        <span id="cosmos-lbl">Cosmos</span>
+      </span>
+    </div>
+    <div style="margin-left:0.5rem">
+      <span class="status-pill">
+        <span class="dot" id="mine-dot"></span>
+        <span id="mine-lbl">Miner idle</span>
+      </span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-user" id="user-email">—</div>
+    <button class="mine-btn start" id="mine-btn" onclick="toggleMine()">⛏ Start Mining</button>
+    <button onclick="logout()" style="background:none;border:none;color:var(--muted);font-size:0.65rem;cursor:pointer;margin-left:0.5rem;">logout</button>
+  </header>
+
+  <!-- 2×2 GRID -->
+  <div class="mine-grid">
+
+    <!-- PANEL 1: Dein Rechner / Local Stats -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">YOUR NODE</span>
+        <span class="panel-badge" id="zone-badge">Zone —</span>
+      </div>
+      <div class="panel-body">
+        <div style="text-align:center;padding:0.75rem 0 1rem">
+          <div class="hps-big" id="hps-val">0</div>
+          <div class="hps-unit">H/S</div>
+          <div class="meter-bar" style="margin-top:0.75rem">
+            <div class="meter-fill" id="hps-meter" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-row-label">Total Hashes</span>
+          <span class="stat-row-val accent" id="hash-count">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Near-Misses</span>
+          <span class="stat-row-val gold" id="nm-count">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Batches Sent</span>
+          <span class="stat-row-val" id="batch-count">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Runtime</span>
+          <span class="stat-row-val" id="runtime-val">0s</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Synergy Earned</span>
+          <span class="stat-row-val gold" id="syn-val">0.000000 SYN</span>
+        </div>
+
+        <div style="margin-top:1rem">
+          <div class="zone-label">CURRENT SEARCH ZONE</div>
+          <div class="zone-grid" id="zone-grid">
+            <!-- 16 zones, 2 rows of 8 -->
+          </div>
+          <div class="zone-range" id="zone-range">0x00000000 – 0x0FFFFFFF</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: Kosmos Stream -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">COSMOS STREAM · HETZNER</span>
+        <span class="panel-badge" id="stream-count">0 events</span>
+      </div>
+      <div class="panel-body" id="cosmos-log">
+        <div class="log-line" style="color:var(--dim)">Connecting to EarnOS...</div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: Local Uni / Mini-Analyst -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">LOCAL UNI · ANALYZER</span>
+        <span class="panel-badge" id="uni-cycle">Cycle 0</span>
+      </div>
+      <div class="panel-body" id="uni-log">
+        <div class="log-line" style="color:var(--dim)">Uni idle — start mining to activate</div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: Batches / Aufgaben from Cosmos -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">BATCHES · TASKS FROM COSMOS</span>
+        <span class="panel-badge gold" id="reward-badge">0.000 SYN</span>
+      </div>
+      <div class="panel-body">
+        <div class="reward-big">
+          <div class="reward-val" id="reward-big">0.000000</div>
+          <div class="reward-label">SYNERGY EARNED</div>
+        </div>
+        <div id="batch-log">
+          <div class="log-line" style="color:var(--dim)">No batches yet — start mining</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── Config ────────────────────────────────────────────────────
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const WS_URL       = 'ws://46.224.239.18:3001';
+const API_URL      = 'http://46.224.239.18:3001';   // REST batch endpoint
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── State ─────────────────────────────────────────────────────
+let user        = null;
+let worker      = null;
+let mining      = false;
+let ws          = null;
+let batchCount  = 0;
+let synergy     = 0;
+let streamCount = 0;
+let uniCycle    = 0;
+let zoneHint    = { min: 0x00000000, max: 0x0FFFFFFF, zone: 0 };
+let localNM     = [];   // Local near-miss memory (mini-Kryptograf)
+
+// ── Auth check ────────────────────────────────────────────────
+async function init() {
+  const { data } = await sb.auth.getSession();
+  if (!data?.session) { window.location.href = 'login.html'; return; }
+  user = data.session.user;
+  document.getElementById('user-email').textContent = user.email.split('@')[0];
+  buildZoneGrid();
+  connectCosmos();
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+// ── Zone Grid ─────────────────────────────────────────────────
+function buildZoneGrid() {
+  const g = document.getElementById('zone-grid');
+  g.innerHTML = '';
+  for (let i = 0; i < 16; i++) {
+    const c = document.createElement('div');
+    c.className = 'zone-cell' + (i === 0 ? ' hot' : '');
+    c.id = 'zone-' + i;
+    c.textContent = i.toString(16).toUpperCase();
+    g.appendChild(c);
+  }
+}
+
+function updateZoneGrid(activeZone) {
+  for (let i = 0; i < 16; i++) {
+    const el = document.getElementById('zone-' + i);
+    if (!el) continue;
+    el.className = 'zone-cell';
+    if (i === activeZone) el.classList.add('hot');
+    else if (localNM.some(nm => nm.zone === i)) el.classList.add('active');
+  }
+}
+
+// ── Cosmos WebSocket ──────────────────────────────────────────
+const SKIP_KW  = ['[D:', '[B:'];
+const NM_KW    = ['Near-Miss', 'NEAR_MISS', 'Treffer'];
+const SYS_KW   = ['ZITADELLE', 'URKNALL', 'KOSMOS', 'WELTPOLIZEI', 'WELTENARCHIV', 'GEGENPOOLS'];
+const ZONE_KW  = ['GREIFER', 'Zone 0', 'Zone-0', 'zone_fokus', 'ZONE'];
+
+function connectCosmos() {
+  const dot = document.getElementById('cosmos-dot');
+  const lbl = document.getElementById('cosmos-lbl');
+  dot.className = 'dot yellow'; lbl.textContent = 'Connecting...';
+
+  ws = new WebSocket(WS_URL);
+
+  ws.onopen = () => {
+    dot.className = 'dot green'; lbl.textContent = 'Cosmos live';
+    addCosmosLine('[Connected to EarnOS Hetzner]', 'sys');
+  };
+
+  ws.onmessage = (e) => {
+    try {
+      const d = JSON.parse(e.data);
+      if (d.type === 'log' && d.line) processCosmosLine(d.line);
+      if (d.type === 'zone_hint') updateZoneHint(d);
+      if (d.type === 'task')      addTask(d);
+    } catch (_) {
+      if (typeof e.data === 'string') processCosmosLine(e.data);
+    }
+  };
+
+  ws.onclose = () => {
+    dot.className = 'dot red'; lbl.textContent = 'Reconnecting...';
+    setTimeout(connectCosmos, 5000);
+  };
+
+  ws.onerror = () => ws.close();
+}
+
+function processCosmosLine(line) {
+  if (SKIP_KW.some(k => line.startsWith(k))) return;
+
+  const cls = NM_KW.some(k => line.includes(k)) ? 'near-miss'
+            : SYS_KW.some(k => line.includes(k)) ? 'highlight'
+            : '';
+
+  addCosmosLine(line, cls);
+  streamCount++;
+  document.getElementById('stream-count').textContent = streamCount + ' events';
+
+  // Extract zone hints from GREIFER messages
+  if (ZONE_KW.some(k => line.includes(k))) {
+    const m = line.match(/Zone\s+(\d+)/i);
+    if (m) updateZoneHint({ zone: parseInt(m[1]) });
+  }
+
+  // If near-miss from Cosmos → flash
+  if (NM_KW.some(k => line.includes(k))) {
+    document.getElementById('cosmos-log').classList.add('flash');
+    setTimeout(() => document.getElementById('cosmos-log').classList.remove('flash'), 1500);
+  }
+}
+
+function addCosmosLine(text, cls = '') {
+  const log = document.getElementById('cosmos-log');
+  const div = document.createElement('div');
+  div.className = 'log-line ' + cls + ' fade-in';
+  div.textContent = text.substring(0, 160);
+  log.appendChild(div);
+  while (log.children.length > 120) log.removeChild(log.firstChild);
+  log.scrollTop = log.scrollHeight;
+}
+
+// ── Zone Hint ─────────────────────────────────────────────────
+function updateZoneHint(hint) {
+  const ZONE_SIZE = Math.floor(0xFFFFFFFF / 16);
+  const z = hint.zone ?? 0;
+  zoneHint = {
+    zone: z,
+    min:  z * ZONE_SIZE,
+    max:  (z + 1) * ZONE_SIZE - 1,
+  };
+
+  document.getElementById('zone-badge').textContent  = 'Zone ' + z;
+  document.getElementById('zone-range').textContent  =
+    '0x' + zoneHint.min.toString(16).padStart(8,'0').toUpperCase() +
+    ' – 0x' + zoneHint.max.toString(16).padStart(8,'0').toUpperCase();
+
+  updateZoneGrid(z);
+
+  // Tell worker about new zone
+  if (worker) worker.postMessage({ cmd: 'zone', min: zoneHint.min, max: zoneHint.max });
+}
+
+// ── Mining Control ────────────────────────────────────────────
+function toggleMine() {
+  if (!mining) startMining();
+  else stopMining();
+}
+
+function startMining() {
+  mining = true;
+  document.getElementById('mine-btn').className = 'mine-btn stop';
+  document.getElementById('mine-btn').textContent = '■ Stop Mining';
+  document.getElementById('mine-dot').className = 'dot green pulse';
+  document.getElementById('mine-lbl').textContent = 'Mining...';
+
+  worker = new Worker('mine-worker.js');
+  worker.onmessage = onWorkerMsg;
+  worker.postMessage({
+    cmd: 'start',
+    zoneHint: { min: zoneHint.min, max: zoneHint.max },
+  });
+
+  addUniLine('Uni activated. Monitoring near-misses in Zone ' + zoneHint.zone + '.');
+}
+
+function stopMining() {
+  mining = false;
+  if (worker) { worker.postMessage({ cmd: 'stop' }); worker = null; }
+  document.getElementById('mine-btn').className = 'mine-btn start';
+  document.getElementById('mine-btn').textContent = '⛏ Start Mining';
+  document.getElementById('mine-dot').className = 'dot';
+  document.getElementById('mine-lbl').textContent = 'Miner idle';
+}
+
+// ── Worker Messages ───────────────────────────────────────────
+function onWorkerMsg(e) {
+  const d = e.data;
+
+  if (d.type === 'stats') {
+    const hps = d.hps;
+    document.getElementById('hps-val').textContent    = hps.toLocaleString();
+    document.getElementById('hash-count').textContent = d.hashCount.toLocaleString();
+    document.getElementById('nm-count').textContent   = d.nearMisses;
+    document.getElementById('runtime-val').textContent = d.elapsed + 's';
+    document.getElementById('syn-val').textContent     = synergy.toFixed(6) + ' SYN';
+    // Meter: max ~2000 H/s for display
+    document.getElementById('hps-meter').style.width  = Math.min(100, hps / 20) + '%';
+  }
+
+  if (d.type === 'near_miss') {
+    for (const nm of d.items) {
+      localNM.push(nm);
+      if (localNM.length > 50) localNM.shift();
+
+      // Uni analysis
+      uniAnalyze(nm, d.bestZeros);
+
+      // Send batch to Cosmos
+      sendBatch(nm, d.bestZeros);
+    }
+    updateZoneGrid(zoneHint.zone);
+  }
+}
+
+// ── Local Uni Analyzer ────────────────────────────────────────
+function uniAnalyze(nm, zeros) {
+  uniCycle++;
+  document.getElementById('uni-cycle').textContent = 'Cycle ' + uniCycle;
+
+  const zoneMatch = nm.zone === zoneHint.zone;
+  const beyondRand = zeros >= 7;  // 7+ zeros = statistically significant
+
+  const urteil = beyondRand ? '✦ BEYOND RANDOM' : zoneMatch ? '· Zone match' : '· Observed';
+
+  addUniLine(
+    `[${uniCycle}] Zone ${nm.zone} | ${zeros} zeros | ${nm.hash} | ${urteil}`
+  );
+
+  if (beyondRand) {
+    addUniLine(`  → Significant signal. Sending to Rathaus.`);
+  }
+}
+
+function addUniLine(text) {
+  const log = document.getElementById('uni-log');
+  const div = document.createElement('div');
+  div.className = 'log-line fade-in';
+  div.style.color = text.includes('BEYOND') ? 'var(--gold)' : 'var(--muted)';
+  div.textContent = text.substring(0, 160);
+  log.appendChild(div);
+  while (log.children.length > 80) log.removeChild(log.firstChild);
+  log.scrollTop = log.scrollHeight;
+}
+
+// ── Batch Sender → Rathaus ────────────────────────────────────
+async function sendBatch(nm, zeros) {
+  batchCount++;
+  document.getElementById('batch-count').textContent = batchCount;
+
+  const beyondRandom = zeros >= 7;
+  const reward       = beyondRandom ? 0.0001 : 0.000001;
+  synergy += reward;
+
+  document.getElementById('reward-big').textContent   = synergy.toFixed(6);
+  document.getElementById('reward-badge').textContent = synergy.toFixed(4) + ' SYN';
+  document.getElementById('syn-val').textContent      = synergy.toFixed(6) + ' SYN';
+
+  // Add to batch log
+  addBatchItem({
+    nonce:       nm.nonce,
+    zone:        nm.zone,
+    zeros,
+    hash:        nm.hash,
+    beyondRandom,
+    reward,
+  });
+
+  // Send to EarnOS server
+  try {
+    await fetch(API_URL + '/miner/batch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId:    user?.id || 'anon',
+        nonce:     nm.nonce,
+        zone:      nm.zone,
+        zeros,
+        hashSample: nm.hash,
+        beyondRandom,
+        ts:        Date.now(),
+      }),
+    });
+  } catch(_) {
+    // Server not reachable — batch still counted locally
+  }
+}
+
+function addBatchItem(b) {
+  const log = document.getElementById('batch-log');
+
+  // Remove empty placeholder
+  const placeholder = log.querySelector('.log-line');
+  if (placeholder && placeholder.style.color === 'var(--dim)') {
+    placeholder.remove();
+  }
+
+  const div = document.createElement('div');
+  div.className = 'batch-item fade-in ' + (b.beyondRandom ? 'beyond' : b.zeros >= 5 ? 'near' : '');
+
+  div.innerHTML = `
+    <div class="batch-header">
+      <span style="color:var(--muted);font-size:0.65rem">#${batchCount} · Zone ${b.zone} · ${b.zeros} zeros</span>
+      <span class="batch-tag ${b.beyondRandom ? 'beyond' : 'near'}">
+        ${b.beyondRandom ? '✦ BEYOND RANDOM' : '· Near-Miss'}
+      </span>
+    </div>
+    <div class="batch-detail">
+      Nonce: ${b.nonce} | ${b.hash}<br>
+      Reward: <span style="color:var(--gold)">+${b.reward.toFixed(6)} SYN</span>
+    </div>
+  `;
+
+  log.insertBefore(div, log.firstChild);
+  while (log.children.length > 20) log.removeChild(log.lastChild);
+}
+
+function addTask(task) {
+  addBatchItem({
+    nonce: '—',
+    zone:  task.zone || '?',
+    zeros: 0,
+    hash:  task.msg || 'Cosmos task',
+    beyondRandom: false,
+    reward: 0,
+  });
+}
+
+// ── Start ─────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

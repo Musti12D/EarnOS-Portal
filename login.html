@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnOS — Enter</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.back-link {
+  position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
+  font-size: 0.7rem; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.back-link:hover { color: var(--text); }
+
+.tabs {
+  display: flex; gap: 0; margin-bottom: 2rem;
+  border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+}
+.tab {
+  flex: 1; padding: 0.6rem;
+  background: var(--surface2); border: none;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.tab.active { background: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+<div class="cosmic-bg"></div>
+
+<a href="index.html" class="back-link">← back to cosmos</a>
+
+<div class="auth-container">
+  <div class="auth-box">
+    <div class="auth-logo">EARNOS · PORTAL</div>
+
+    <div class="tabs">
+      <button class="tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="tab" id="tab-signup" onclick="switchTab('signup')">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="form-login">
+      <div class="auth-title">Enter the Cosmos</div>
+      <div class="auth-sub">Your node awaits.</div>
+      <div class="form-group">
+        <label class="form-label">EMAIL</label>
+        <input type="email" id="login-email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">PASSWORD</label>
+        <input type="password" id="login-pw" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="doLogin()">Login →</button>
+      <div class="auth-msg" id="login-msg"></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="form-signup" style="display:none">
+      <div class="auth-title">Join the Cosmos</div>
+      <div class="auth-sub">Become an observer node.</div>
+      <div class="form-group">
+        <label class="form-label">EMAIL</label>
+        <input type="email" id="signup-email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">PASSWORD</label>
+        <input type="password" id="signup-pw" class="form-input" placeholder="min. 8 characters">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="doSignup()">Create Node →</button>
+      <div class="auth-msg" id="signup-msg"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function switchTab(t) {
+  document.getElementById('tab-login').classList.toggle('active', t === 'login');
+  document.getElementById('tab-signup').classList.toggle('active', t === 'signup');
+  document.getElementById('form-login').style.display  = t === 'login'  ? '' : 'none';
+  document.getElementById('form-signup').style.display = t === 'signup' ? '' : 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw    = document.getElementById('login-pw').value;
+  const msg   = document.getElementById('login-msg');
+  msg.textContent = 'Connecting...'; msg.className = 'auth-msg';
+  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+  if (error) { msg.textContent = error.message; msg.className = 'auth-msg error'; return; }
+  msg.textContent = 'Entering cosmos...'; msg.className = 'auth-msg success';
+  setTimeout(() => window.location.href = 'mine.html', 600);
+}
+
+async function doSignup() {
+  const email = document.getElementById('signup-email').value.trim();
+  const pw    = document.getElementById('signup-pw').value;
+  const msg   = document.getElementById('signup-msg');
+  msg.textContent = 'Creating node...'; msg.className = 'auth-msg';
+  const { error } = await sb.auth.signUp({ email, password: pw });
+  if (error) { msg.textContent = error.message; msg.className = 'auth-msg error'; return; }
+  msg.textContent = 'Node created — check your email!'; msg.className = 'auth-msg success';
+}
+
+// If already logged in → skip to mine
+sb.auth.getSession().then(({ data }) => {
+  if (data?.session) window.location.href = 'mine.html';
+});
+</script>
+</body>
+</html>
