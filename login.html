@@ -75,12 +75,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 function switchTab(t) {
   document.getElementById('tab-login').classList.toggle('active', t === 'login');
   document.getElementById('tab-signup').classList.toggle('active', t === 'signup');
@@ -93,10 +88,19 @@ async function doLogin() {
   const pw    = document.getElementById('login-pw').value;
   const msg   = document.getElementById('login-msg');
   msg.textContent = 'Connecting...'; msg.className = 'auth-msg';
-  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
-  if (error) { msg.textContent = error.message; msg.className = 'auth-msg error'; return; }
-  msg.textContent = 'Entering cosmos...'; msg.className = 'auth-msg success';
-  setTimeout(() => window.location.href = 'mine.html', 600);
+  try {
+    const r = await fetch('/api/auth?action=login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pw }),
+    });
+    const d = await r.json();
+    if (!r.ok) { msg.textContent = d.error; msg.className = 'auth-msg error'; return; }
+    localStorage.setItem('earnos_token', d.token);
+    localStorage.setItem('earnos_user',  JSON.stringify({ email: d.email, userId: d.userId }));
+    msg.textContent = 'Entering cosmos...'; msg.className = 'auth-msg success';
+    setTimeout(() => window.location.href = 'mine.html', 600);
+  } catch(_) { msg.textContent = 'Connection error'; msg.className = 'auth-msg error'; }
 }
 
 async function doSignup() {
@@ -104,15 +108,23 @@ async function doSignup() {
   const pw    = document.getElementById('signup-pw').value;
   const msg   = document.getElementById('signup-msg');
   msg.textContent = 'Creating node...'; msg.className = 'auth-msg';
-  const { error } = await sb.auth.signUp({ email, password: pw });
-  if (error) { msg.textContent = error.message; msg.className = 'auth-msg error'; return; }
-  msg.textContent = 'Node created — check your email!'; msg.className = 'auth-msg success';
+  try {
+    const r = await fetch('/api/auth?action=register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pw }),
+    });
+    const d = await r.json();
+    if (!r.ok) { msg.textContent = d.error; msg.className = 'auth-msg error'; return; }
+    localStorage.setItem('earnos_token', d.token);
+    localStorage.setItem('earnos_user',  JSON.stringify({ email: d.email, userId: d.userId }));
+    msg.textContent = 'Node created — entering cosmos...'; msg.className = 'auth-msg success';
+    setTimeout(() => window.location.href = 'mine.html', 800);
+  } catch(_) { msg.textContent = 'Connection error'; msg.className = 'auth-msg error'; }
 }
 
-// If already logged in → skip to mine
-sb.auth.getSession().then(({ data }) => {
-  if (data?.session) window.location.href = 'mine.html';
-});
+// Already logged in?
+if (localStorage.getItem('earnos_token')) window.location.href = 'mine.html';
 </script>
 </body>
 </html>

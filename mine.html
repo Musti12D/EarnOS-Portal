@@ -172,15 +172,9 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ── Config ────────────────────────────────────────────────────
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-const WS_URL       = 'ws://46.224.239.18:3001';
-const API_URL      = 'http://46.224.239.18:3001';   // REST batch endpoint
-
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const API_URL      = 'http://46.224.239.18:3001';   // Hetzner REST
 
 // ── State ─────────────────────────────────────────────────────
 let user        = null;
@@ -196,16 +190,26 @@ let localNM     = [];   // Local near-miss memory (mini-Kryptograf)
 
 // ── Auth check ────────────────────────────────────────────────
 async function init() {
-  const { data } = await sb.auth.getSession();
-  if (!data?.session) { window.location.href = 'login.html'; return; }
-  user = data.session.user;
+  const token = localStorage.getItem('earnos_token');
+  if (!token) { window.location.href = 'login.html'; return; }
+
+  const r = await fetch('/api/auth?action=me', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
+  if (!r.ok) { window.location.href = 'login.html'; return; }
+
+  user = await r.json();
+  synergy = user.synergy || 0;
   document.getElementById('user-email').textContent = user.email.split('@')[0];
+  document.getElementById('reward-big').textContent  = synergy.toFixed(6);
+  document.getElementById('reward-badge').textContent = synergy.toFixed(4) + ' SYN';
   buildZoneGrid();
-  connectCosmos();
+  startCosmosPolling();
 }
 
-async function logout() {
-  await sb.auth.signOut();
+function logout() {
+  localStorage.removeItem('earnos_token');
+  localStorage.removeItem('earnos_user');
   window.location.href = 'login.html';
 }
 
@@ -232,41 +236,39 @@ function updateZoneGrid(activeZone) {
   }
 }
 
-// ── Cosmos WebSocket ──────────────────────────────────────────
+// ── Cosmos Polling (kein ws:// → kein Mixed Content) ──────────
 const SKIP_KW  = ['[D:', '[B:'];
 const NM_KW    = ['Near-Miss', 'NEAR_MISS', 'Treffer'];
 const SYS_KW   = ['ZITADELLE', 'URKNALL', 'KOSMOS', 'WELTPOLIZEI', 'WELTENARCHIV', 'GEGENPOOLS'];
-const ZONE_KW  = ['GREIFER', 'Zone 0', 'Zone-0', 'zone_fokus', 'ZONE'];
+const ZONE_KW  = ['GREIFER', 'Zone 0', 'Zone-0', 'ZONE'];
+let pollOffset = 0, pollErrors = 0;
 
-function connectCosmos() {
+function startCosmosPolling() {
   const dot = document.getElementById('cosmos-dot');
   const lbl = document.getElementById('cosmos-lbl');
   dot.className = 'dot yellow'; lbl.textContent = 'Connecting...';
 
-  ws = new WebSocket(WS_URL);
-
-  ws.onopen = () => {
+  // Zone-Hint beim Start holen
+  fetch('/api/stream?offset=0').then(r => r.json()).then(d => {
+    if (d.lines) d.lines.forEach(l => processCosmosLine(l));
+    pollOffset = d.total || 0;
     dot.className = 'dot green'; lbl.textContent = 'Cosmos live';
-    addCosmosLine('[Connected to EarnOS Hetzner]', 'sys');
-  };
+  }).catch(() => {});
 
-  ws.onmessage = (e) => {
+  // Alle 3s neue Lines holen
+  setInterval(async () => {
     try {
-      const d = JSON.parse(e.data);
-      if (d.type === 'log' && d.line) processCosmosLine(d.line);
-      if (d.type === 'zone_hint') updateZoneHint(d);
-      if (d.type === 'task')      addTask(d);
-    } catch (_) {
-      if (typeof e.data === 'string') processCosmosLine(e.data);
+      const r = await fetch(`/api/stream?offset=${pollOffset}`);
+      const d = await r.json();
+      if (d.lines && d.lines.length > 0) {
+        d.lines.forEach(l => processCosmosLine(l));
+        pollOffset = d.total;
+      }
+      dot.className = 'dot green'; lbl.textContent = 'Cosmos live';
+    } catch(_) {
+      dot.className = 'dot red'; lbl.textContent = 'Reconnecting...';
     }
-  };
-
-  ws.onclose = () => {
-    dot.className = 'dot red'; lbl.textContent = 'Reconnecting...';
-    setTimeout(connectCosmos, 5000);
-  };
-
-  ws.onerror = () => ws.close();
+  }, 3000);
 }
 
 function processCosmosLine(line) {

@@ -553,39 +553,38 @@ function addLine(text) {
   logEl.scrollTop = logEl.scrollHeight;
 }
 
-function connect() {
-  connDot.className  = 'dot yellow pulse';
+// Polling via /api/stream (kein ws:// → kein Mixed Content)
+let pollOffset = 0;
+let pollErrors = 0;
+
+async function connect() {
+  connDot.className   = 'dot yellow pulse';
   connLbl.textContent = 'connecting...';
-
-  let ws;
-  try { ws = new WebSocket(WS_URL); } catch(e) { schedReconnect(); return; }
-
-  ws.onopen = () => {
-    connDot.className  = 'dot green pulse';
-    connLbl.textContent = 'live · hetzner';
-    addLine('▶ Connected to EarnOS Cosmos');
-  };
-
-  ws.onmessage = (e) => {
-    try {
-      const d = JSON.parse(e.data);
-      if (d.type === 'log' && d.line) addLine(d.line);
-    } catch(_) {
-      if (typeof e.data === 'string') addLine(e.data);
-    }
-  };
-
-  ws.onclose = () => {
-    connDot.className  = 'dot red';
-    connLbl.textContent = 'reconnecting...';
-    addLine('· Connection lost — reconnecting in 5s');
-    schedReconnect();
-  };
-
-  ws.onerror = () => { ws.close(); };
+  await poll();
 }
 
-function schedReconnect() { setTimeout(connect, 5000); }
+async function poll() {
+  try {
+    const r = await fetch(`/api/stream?offset=${pollOffset}`);
+    const d = await r.json();
+
+    if (d.lines && d.lines.length > 0) {
+      for (const line of d.lines) addLine(line);
+      pollOffset = d.total;
+    }
+
+    connDot.className   = 'dot green pulse';
+    connLbl.textContent = 'live · hetzner';
+    pollErrors = 0;
+  } catch(_) {
+    pollErrors++;
+    if (pollErrors > 3) {
+      connDot.className   = 'dot red';
+      connLbl.textContent = 'reconnecting...';
+    }
+  }
+  setTimeout(poll, 3000);
+}
 
 // Demo lines while connecting (replaces stale state if no WS)
 const DEMO = [
