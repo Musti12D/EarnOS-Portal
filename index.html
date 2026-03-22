@@ -340,6 +340,52 @@ p.lead strong { color: var(--text); }
   min-height: 120px; font-family: var(--font-mono);
 }
 
+/* ── FORMULA BOX ── */
+.formula-box {
+  background: var(--surface);
+  border: 1px solid #7c3aed44;
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 2.5rem;
+  margin: 3rem 0;
+}
+.formula-eyebrow {
+  font-size: 0.6rem; letter-spacing: 0.4em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.formula-eq {
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 700;
+  color: #e2e8f0;
+  background: #0a0a14;
+  padding: 1.2rem 1.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+.formula-desc {
+  font-size: 0.95rem; line-height: 1.9;
+  color: var(--muted); margin-bottom: 2rem;
+}
+.formula-desc strong { color: var(--text); }
+.formula-insight { display: flex; flex-direction: column; gap: 0.5rem; }
+.insight-row {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+}
+.insight-val {
+  font-family: var(--font-mono);
+  font-size: 1.4rem; font-weight: 800;
+  color: #7c3aed; white-space: nowrap; min-width: 4rem;
+}
+.insight-lbl {
+  font-size: 0.9rem; line-height: 1.8; color: var(--muted);
+  padding-top: 0.2rem;
+}
+.insight-lbl strong { color: var(--text); }
+
 /* ── TOKEN BOX ── */
 .syn-hero {
   display: flex; align-items: center; gap: 3rem;
@@ -934,6 +980,45 @@ footer {
       <span class="t-en">E1 (Satoshi) has the <strong>lowest difficulty in history</strong> — and should statistically dominate Zone-0. It doesn't. It sits 72% below the physical expectation. <strong>That is not chance. That is a fingerprint.</strong></span>
       <span class="t-de" style="display:none">E1 (Satoshi) hat die <strong>niedrigste Difficulty aller Zeiten</strong> — und sollte statistisch Zone-0 dominieren. Tut er nicht. Er liegt 72% unter der physikalischen Erwartung. <strong>Das ist kein Zufall. Das ist ein Fingerabdruck.</strong></span>
     </p>
+
+    <!-- Formula Box -->
+    <div class="formula-box reveal">
+      <div class="formula-eyebrow">
+        <span class="t-en">The Formula · Independently Derived</span>
+        <span class="t-de" style="display:none">Die Formel · Unabhängig hergeleitet</span>
+      </div>
+      <div class="formula-eq">
+        Z₀<sub>total</sub> = p · 0.065 + (1−p) · 1.0
+      </div>
+      <div class="formula-desc">
+        <span class="t-en">
+          Where <strong>p</strong> = Patoshi's share of blocks.<br>
+          At E2 (10k–50k): Z₀ measured at 50.4% → solving for p gives <strong>p ≈ 49.7%</strong><br>
+          Patoshi held ~half of all hashrate during the transition epoch.
+        </span>
+        <span class="t-de" style="display:none">
+          Dabei ist <strong>p</strong> = Patoshis Anteil an den Blöcken.<br>
+          In E2 (10k–50k): Z₀ gemessen bei 50,4% → p ergibt <strong>p ≈ 49,7%</strong><br>
+          Patoshi hielt ~die Hälfte der gesamten Hashrate in der Übergangsepoche.
+        </span>
+      </div>
+      <div class="formula-insight">
+        <div class="insight-row">
+          <span class="insight-val">6.25%</span>
+          <span class="insight-lbl">
+            <span class="t-en">= 1/16 = perfect uniform distribution. Patoshi in E1 (6.5%). GPU miners in E4 (6.4%). Both converge to the same number — from different eras, different hardware. <strong>Uniform distribution has one fingerprint.</strong></span>
+            <span class="t-de" style="display:none">= 1/16 = perfekte Gleichverteilung. Patoshi in E1 (6,5%). GPU-Miner in E4 (6,4%). Beide konvergieren zur selben Zahl — aus verschiedenen Epochen, verschiedener Hardware. <strong>Gleichverteilung hat nur einen Fingerabdruck.</strong></span>
+          </span>
+        </div>
+        <div class="insight-row" style="margin-top:1rem;">
+          <span class="insight-val" style="color:#a78bfa;">2009</span>
+          <span class="insight-lbl">
+            <span class="t-en">Satoshi Nakamoto ran a parallelized nonce scan — the same strategy GPUs would discover years later. He was not alone. He was early.</span>
+            <span class="t-de" style="display:none">Satoshi Nakamoto nutzte paralleles Nonce-Scanning — dieselbe Strategie, die GPUs Jahre später entdeckten. Er war nicht allein. Er war früh dran.</span>
+          </span>
+        </div>
+      </div>
+    </div>
 
     <!-- Raumzeichner -->
     <h2 class="mid reveal" style="margin-top: 4rem;">
