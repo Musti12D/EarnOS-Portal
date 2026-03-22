@@ -431,9 +431,60 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
+  /* Nav */
   .nav-links { display: none; }
-  .yn-btn { width: 140px; height: 140px; font-size: 1.1rem; }
-  section { padding: 5rem 1.5rem; }
+  .nav { padding: 0.8rem 1.2rem; }
+  .nav-cta { margin-left: 0.8rem; padding: 0.4rem 0.8rem; font-size: 0.62rem; }
+
+  /* Sections */
+  section { padding: 4rem 1.2rem; }
+
+  /* Hero */
+  .hero { padding: 6rem 1.2rem 3rem; }
+
+  /* Typography */
+  h2.big  { font-size: 1.8rem; }
+  h2.mid  { font-size: 1.3rem; }
+  p.lead  { font-size: 0.92rem; line-height: 1.9; }
+
+  /* Gauss */
+  .gauss-text { font-size: 1rem; }
+
+  /* YN Buttons */
+  .yn-wrap { gap: 1.2rem; }
+  .yn-btn  { width: 130px; height: 130px; font-size: 1rem; }
+
+  /* 3 Buttons */
+  .three-btns { flex-direction: column; align-items: center; }
+  .t-btn { width: 100%; max-width: 280px; }
+
+  /* Lamp grid */
+  .lamp { width: 10px; height: 10px; }
+
+  /* Gears: scale down */
+  .gears-wrap { height: 200px; transform: scale(0.75); transform-origin: center center; }
+
+  /* Token hero */
+  .syn-hero { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+  .syn-stats { grid-template-columns: 1fr 1fr; }
+  .syn-logo-wrap img { width: 90px; height: 90px; }
+
+  /* Raum grid */
+  .raum-grid { grid-template-columns: 1fr; }
+
+  /* Log terminal */
+  .log-term { font-size: 0.62rem; padding: 1rem; }
+
+  /* Stream */
+  .stream-body { font-size: 0.62rem; padding: 1rem; }
+  .stream-title { display: none; }
+
+  /* Epoch table — horizontal scroll */
+  .epoch-table { font-size: 0.65rem; display: block; overflow-x: auto; white-space: nowrap; }
+
+  /* Contact */
+  .contact-grid { justify-content: center; }
+  .c-pill { font-size: 0.65rem; padding: 0.4rem 0.9rem; }
 }
 </style>
 </head>
