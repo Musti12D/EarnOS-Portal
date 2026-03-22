@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -451,13 +451,14 @@ footer {
   </a>
   <div class="nav-spacer"></div>
   <div class="nav-links">
-    <a href="#frage">Die Frage</a>
-    <a href="#test">Der Test</a>
-    <a href="#kosmos">Der Kosmos</a>
-    <a href="#erkenntnisse">Erkenntnisse</a>
+    <a href="#frage"><span class="t-en">The Question</span><span class="t-de" style="display:none">Die Frage</span></a>
+    <a href="#test"><span class="t-en">The Test</span><span class="t-de" style="display:none">Der Test</span></a>
+    <a href="#kosmos"><span class="t-en">The Cosmos</span><span class="t-de" style="display:none">Der Kosmos</span></a>
+    <a href="#erkenntnisse"><span class="t-en">Findings</span><span class="t-de" style="display:none">Erkenntnisse</span></a>
     <a href="#coin">SYN</a>
   </div>
-  <a href="mine.html" class="nav-cta">Jetzt Minen →</a>
+  <a href="mine.html" class="nav-cta"><span class="t-en">Start Mining →</span><span class="t-de" style="display:none">Jetzt Minen →</span></a>
+  <button id="lang-toggle" onclick="toggleLang()" style="margin-left:1rem; background:none; border:1px solid rgba(124,58,237,0.4); color:var(--muted); padding:0.4rem 0.8rem; border-radius:4px; font-size:0.65rem; letter-spacing:0.2em; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(124,58,237,0.4)'">DE</button>
 </nav>
 
 <!-- ══════════════════════════════════════════════
@@ -465,8 +466,8 @@ footer {
 ═══════════════════════════════════════════════ -->
 <section class="dark hero">
   <img src="syn-logo.svg" class="hero-logo" alt="SYN">
-  <h1 class="hero-question">Was ist Raum und Zeit.<br>Gibt es Zufall?</h1>
-  <p class="hero-question-en">What is space and time. Does chance exist?</p>
+  <h1 class="hero-question"><span class="t-en">What is Space and Time.<br>Does Chance Exist?</span><span class="t-de" style="display:none">Was ist Raum und Zeit.<br>Gibt es Zufall?</span></h1>
+  <p class="hero-question-en"><span class="t-en">A question that begins simply.</span><span class="t-de" style="display:none">Eine Frage die einfach beginnt.</span></p>
   <div class="hero-scroll">
     <span>SCROLL</span>
     <div class="scroll-line"></div>
@@ -479,7 +480,7 @@ footer {
 <section class="paper" id="frage">
   <div class="inner">
 
-    <span class="eyebrow">00 · Die Frage / The Question</span>
+    <span class="eyebrow"><span class="t-en">00 · The Question</span><span class="t-de" style="display:none">00 · Die Frage</span></span>
 
     <div class="gauss-wrap reveal">
       <p class="gauss-text">
@@ -487,36 +488,33 @@ footer {
         nicht bewiesen werden kann — wenigstens nicht vom menschlichen Verstande
         für den menschlichen Verstand."
       </p>
-      <span class="gauss-src">— Carl Friedrich Gauß, Brief an Olbers, 1817</span>
+      <p class="gauss-text t-en" style="font-size:0.9em; opacity:0.7; margin-top:1rem;">
+        "I am increasingly convinced that the necessity of our geometry cannot be proven —
+        at least not by the human mind for the human mind."
+      </p>
+      <span class="gauss-src">— C.F. Gauß, Letter to Olbers, 1817</span>
     </div>
 
     <div class="divider"></div>
 
     <h2 class="mid reveal">
-      Die Frage beginnt ganz einfach.<br>
-      <em>Gibt es ein Paralleluniversum?</em>
+      <span class="t-en">The question begins simply.<br><em>Does a parallel universe exist?</em></span>
+      <span class="t-de" style="display:none">Die Frage beginnt ganz einfach.<br><em>Gibt es ein Paralleluniversum?</em></span>
     </h2>
 
     <p class="lead reveal">
-      Klingt wahnsinnig — ist aber eine <strong>mathematisch präzise Frage</strong>.
-      Gauß beschäftigte sich damit sein Leben lang. Nicht mit Fantasie.
-      Mit Geometrie. Mit der Frage ob unsere Welt die einzige mögliche ist —
-      oder nur eine von unendlich vielen.<br>
-      <span style="opacity:0.6; font-size:0.9em;">Sounds insane — but it's a <strong>mathematically precise question</strong>.
-      Gauss spent his life on it. Not fantasy. Geometry. Whether our world
-      is the only possible one — or just one of infinitely many.</span>
+      <span class="t-en">Sounds insane — but it's a <strong>mathematically precise question</strong>. Gauss spent his life on it. Not fantasy. Geometry. Whether our world is the only possible one — or just one of infinitely many.</span>
+      <span class="t-de" style="display:none">Klingt wahnsinnig — ist aber eine <strong>mathematisch präzise Frage</strong>. Gauß beschäftigte sich damit sein Leben lang. Nicht mit Fantasie. Mit Geometrie. Ob unsere Welt die einzige mögliche ist — oder nur eine von unendlich vielen.</span>
     </p>
 
     <p class="lead reveal">
-      Was wenn alles was wir sehen, fühlen, berechnen — nur eine Art
-      der Darstellung von etwas ist, das größer ist als wir denken können?<br>
-      <span style="opacity:0.6; font-size:0.9em;"><strong>What if space and time are not a container — but information?</strong>
-      What if everything we see, feel, calculate is just one representation
-      of something far greater than we can think?</span>
+      <span class="t-en"><strong>What if space and time are not a container — but information?</strong> What if everything we see, feel, calculate is just one representation of something far greater than we can think?</span>
+      <span class="t-de" style="display:none"><strong>Was wenn Raum und Zeit kein Behälter sind — sondern Information?</strong> Was wenn alles was wir sehen, fühlen, berechnen nur eine Art der Darstellung von etwas ist, das größer ist als wir denken können?</span>
     </p>
 
     <p class="lead reveal" style="font-style:italic; opacity:0.7; font-size:0.9rem;">
-      Viele Fragen. Eine Richtung. — Many questions. One direction.
+      <span class="t-en">Many questions. One direction.</span>
+      <span class="t-de" style="display:none">Viele Fragen. Eine Richtung.</span>
     </p>
 
   </div>
@@ -548,53 +546,37 @@ footer {
 <section class="paper">
   <div class="inner">
 
-    <span class="eyebrow">01 · Die Überlegung / The Reflection</span>
+    <span class="eyebrow"><span class="t-en">01 · The Reflection</span><span class="t-de" style="display:none">01 · Die Überlegung</span></span>
     <div class="divider"></div>
 
     <p class="lead reveal">
-      Und ich fragte mich: Ist der Mensch im Raum und in der Zeit gefangen —
-      oder gibt es Raum und Zeit überhaupt? Oder ist die Welt die wir erleben
-      <strong>nur eine Art von Information</strong>, die wir verstehen können?<br>
-      <span style="opacity:0.6; font-size:0.9em;">And I asked myself: Is the human trapped in space and time —
-      or does space and time even exist? Or is the world we experience
-      <strong>just one kind of information</strong> we can understand?</span>
+      <span class="t-en">And I asked myself: Is the human trapped in space and time — or does space and time even exist? Or is the world we experience <strong>just one kind of information</strong> we can understand?</span>
+      <span class="t-de" style="display:none">Und ich fragte mich: Ist der Mensch im Raum und in der Zeit gefangen — oder gibt es Raum und Zeit überhaupt? Oder ist die Welt die wir erleben <strong>nur eine Art von Information</strong>, die wir verstehen können?</span>
     </p>
 
     <p class="lead reveal">
-      Wenn die Welt Information ist, hat diese Information eine Struktur.
-      Eine Sprache. Eine Grammatik. Und wenn es eine Grammatik gibt —
-      dann gibt es auch eine Frage die man stellen kann.<br>
-      <span style="opacity:0.6; font-size:0.9em;">If the world is information, that information has a structure.
-      A language. A grammar. And if there is a grammar —
-      then there is a question that can be asked.</span>
+      <span class="t-en">If the world is information, that information has a structure. A language. A grammar. And if there is a grammar — then there is a question that can be asked.</span>
+      <span class="t-de" style="display:none">Wenn die Welt Information ist, hat diese Information eine Struktur. Eine Sprache. Eine Grammatik. Und wenn es eine Grammatik gibt — dann gibt es auch eine Frage die man stellen kann.</span>
     </p>
 
     <h2 class="mid reveal" style="margin-top: 3rem;">
-      Wenn die Frage einfach wäre, hieße sie:<br>
-      <em>Gibt es Parallelwelten — ja oder nein?</em><br>
-      <span style="font-size:0.65em; opacity:0.5; font-style:normal;">If it were simple: Do parallel worlds exist — yes or no?</span>
+      <span class="t-en">If it were simple it would be:<br><em>Do parallel worlds exist — yes or no?</em></span>
+      <span class="t-de" style="display:none">Wenn die Frage einfach wäre, hieße sie:<br><em>Gibt es Parallelwelten — ja oder nein?</em></span>
     </h2>
 
     <p class="lead reveal">
-      Aber so einfach ist sie nicht. Und genau deshalb ist
-      <strong>Bitcoin perfekt</strong> — eine mathematische Unmöglichkeit.
-      Satoshi hat Raum und Zeit in einem Algorithmus kodiert.<br>
-      <span style="opacity:0.6; font-size:0.9em;">But it's not that simple. That's exactly why <strong>Bitcoin is perfect</strong> —
-      a mathematical impossibility. Satoshi encoded space and time in an algorithm.</span>
+      <span class="t-en">But it's not that simple. That's exactly why <strong>Bitcoin is perfect</strong> — a mathematical impossibility. Satoshi encoded space and time in an algorithm.</span>
+      <span class="t-de" style="display:none">Aber so einfach ist sie nicht. Und genau deshalb ist <strong>Bitcoin perfekt</strong> — eine mathematische Unmöglichkeit. Satoshi hat Raum und Zeit in einem Algorithmus kodiert.</span>
     </p>
 
     <p class="lead reveal">
-      Oder war er wirklich nur ein Banker? In beiden Fällen gilt:
-      <strong>Alles was ein Mensch gemacht hat, ist knackbar.</strong>
-      Oder ist es größer als wir denken?<br>
-      <span style="opacity:0.6; font-size:0.9em;">Or was he just a banker? Either way:
-      <strong>Everything made by a human can be broken.</strong>
-      Or is it greater than we think?</span>
+      <span class="t-en">Or was he just a banker? Either way: <strong>Everything made by a human can be broken.</strong> Or is it greater than we think?</span>
+      <span class="t-de" style="display:none">Oder war er wirklich nur ein Banker? In beiden Fällen gilt: <strong>Alles was ein Mensch gemacht hat, ist knackbar.</strong> Oder ist es größer als wir denken?</span>
     </p>
 
     <p class="lead reveal" style="font-size:1.2rem; font-weight:700; color:#0d0b08; margin-top: 2rem;">
-      Darum entstand ein ganzer Kosmos.<br>
-      <span style="font-size:0.75em; font-weight:400; opacity:0.6;">That's why an entire cosmos was born.</span>
+      <span class="t-en">That's why an entire cosmos was born.</span>
+      <span class="t-de" style="display:none">Darum entstand ein ganzer Kosmos.</span>
     </p>
 
   </div>
@@ -606,24 +588,21 @@ footer {
 <section class="dark" id="test">
   <div class="inner">
 
-    <span class="eyebrow">02 · Der Test / The Test</span>
+    <span class="eyebrow"><span class="t-en">02 · The Test</span><span class="t-de" style="display:none">02 · Der Test</span></span>
 
     <h2 class="big reveal">
-      Kann man mit Formeln<br>besser minen?
+      <span class="t-en">Can you mine better<br>with formulas?</span>
+      <span class="t-de" style="display:none">Kann man mit Formeln<br>besser minen?</span>
     </h2>
 
     <p class="lead reveal">
-      Die erste Hypothese war einfach: wenn Bitcoin eine mathematische Struktur hat,
-      dann müssen unsere Miner — ausgerüstet mit Formeln, Wahrscheinlichkeiten,
-      Mustern — <strong>besser abschneiden als reiner Zufall</strong>.<br>
-      <span style="opacity:0.5; font-size:0.88em;">The first hypothesis was simple: if Bitcoin has a mathematical structure,
-      our miners — equipped with formulas, probabilities, patterns — must
-      <strong>outperform pure chance</strong>.</span>
+      <span class="t-en">The first hypothesis was simple: if Bitcoin has a mathematical structure, our miners — equipped with formulas, probabilities, patterns — must <strong>outperform pure chance</strong>.</span>
+      <span class="t-de" style="display:none">Die erste Hypothese war einfach: wenn Bitcoin eine mathematische Struktur hat, dann müssen unsere Miner — ausgerüstet mit Formeln, Wahrscheinlichkeiten, Mustern — <strong>besser abschneiden als reiner Zufall</strong>.</span>
     </p>
 
     <p class="lead reveal" style="color: #ef4444; font-weight: 700;">
-      Stellte sich raus: unsere Matheofen minen schlechter als der Zufall.<br>
-      <span style="font-size:0.85em; font-weight:400;">Turned out: our math engines mine worse than random chance.</span>
+      <span class="t-en">Turned out: our math engines mine worse than random chance.</span>
+      <span class="t-de" style="display:none">Stellte sich raus: unsere Matheofen minen schlechter als der Zufall.</span>
     </p>
 
     <div class="log-term reveal">
@@ -638,12 +617,8 @@ footer {
     </div>
 
     <p class="lead reveal">
-      Das war der Moment. Nicht Scheitern — <strong>Erkenntnis</strong>.
-      Wenn die Formel schlechter ist als der Zufall, dann ist das Muster
-      entweder sehr gut versteckt — oder der Zufall ist gar keiner.<br>
-      <span style="opacity:0.5; font-size:0.88em;">That was the moment. Not failure — <strong>discovery</strong>.
-      If the formula is worse than chance, the pattern is either very well hidden —
-      or chance doesn't exist.</span>
+      <span class="t-en">That was the moment. Not failure — <strong>discovery</strong>. If the formula is worse than chance, the pattern is either very well hidden — or chance doesn't exist.</span>
+      <span class="t-de" style="display:none">Das war der Moment. Nicht Scheitern — <strong>Erkenntnis</strong>. Wenn die Formel schlechter ist als der Zufall, dann ist das Muster entweder sehr gut versteckt — oder der Zufall ist gar keiner.</span>
     </p>
 
   </div>
@@ -655,35 +630,31 @@ footer {
 <section class="paper">
   <div class="inner" style="text-align:center;">
 
-    <span class="eyebrow">03 · Der Anfang / The Beginning</span>
+    <span class="eyebrow"><span class="t-en">03 · The Beginning</span><span class="t-de" style="display:none">03 · Der Anfang</span></span>
     <div class="divider" style="margin:2rem auto;"></div>
 
-    <h2 class="mid reveal">Alles begann so.</h2>
+    <h2 class="mid reveal"><span class="t-en">It all started here.</span><span class="t-de" style="display:none">Alles begann so.</span></h2>
 
     <p class="lead reveal" style="text-align:left;">
-      Treffen unsere Miner den richtigen Hash?
-      Eine einfache Frage. <strong>Ja oder Nein.</strong>
-      Die Seite merkt sich, wer schaut. Wer fragt. Wer zweifelt.<br>
-      <span style="opacity:0.55; font-size:0.88em;">Do our miners hit the right hash?
-      A simple question. <strong>Yes or No.</strong>
-      The page remembers who watches. Who asks. Who doubts.</span>
+      <span class="t-en">Do our miners hit the right hash? A simple question. <strong>Yes or No.</strong> The page remembers who watches. Who asks. Who doubts.</span>
+      <span class="t-de" style="display:none">Treffen unsere Miner den richtigen Hash? Eine einfache Frage. <strong>Ja oder Nein.</strong> Die Seite merkt sich, wer schaut. Wer fragt. Wer zweifelt.</span>
     </p>
 
     <div class="yn-wrap reveal">
       <button class="yn-btn yn-ja" id="btn-ja" onclick="vote('ja')">
-        JA
-        <span class="yn-sub">Yes / Ja</span>
+        <span class="t-en">YES</span><span class="t-de" style="display:none">JA</span>
+        <span class="yn-sub"><span class="t-en">Yes</span><span class="t-de" style="display:none">Ja</span></span>
       </button>
       <button class="yn-btn yn-nein" id="btn-nein" onclick="vote('nein')">
-        NEIN
-        <span class="yn-sub">No / Nein</span>
+        <span class="t-en">NO</span><span class="t-de" style="display:none">NEIN</span>
+        <span class="yn-sub"><span class="t-en">No</span><span class="t-de" style="display:none">Nein</span></span>
       </button>
     </div>
     <div class="yn-counter" id="yn-counter">— / — beobachten gerade</div>
 
     <p class="lead reveal" style="text-align:left;">
-      Reicht nicht. Also müssen wir erweitern.<br>
-      <span style="opacity:0.55; font-size:0.88em;">Not enough. We need to go deeper.</span>
+      <span class="t-en">Not enough. We need to go deeper.</span>
+      <span class="t-de" style="display:none">Reicht nicht. Also müssen wir erweitern.</span>
     </p>
 
   </div>
@@ -695,21 +666,16 @@ footer {
 <section class="dark">
   <div class="inner">
 
-    <span class="eyebrow">04 · Die Erweiterung / The Expansion</span>
+    <span class="eyebrow"><span class="t-en">04 · The Expansion</span><span class="t-de" style="display:none">04 · Die Erweiterung</span></span>
 
     <h2 class="mid reveal">
-      API. Alle Blöcke.<br>Von damals bis heute.
+      <span class="t-en">API. All blocks.<br>From genesis to today.</span>
+      <span class="t-de" style="display:none">API. Alle Blöcke.<br>Von damals bis heute.</span>
     </h2>
 
     <p class="lead reveal">
-      Wir holen alle Blöcke von Block 0 bis heute runter.
-      Unsere Miner, die vergangenen Jobs, der richtige Hash —
-      unsere Treffer werden verglichen. Nicht gegen Theorie.
-      Gegen <strong>Realität</strong>.<br>
-      <span style="opacity:0.5; font-size:0.88em;">We download all blocks from block 0 to today.
-      Our miners, the past jobs, the correct hash —
-      our hits compared. Not against theory.
-      Against <strong>reality</strong>.</span>
+      <span class="t-en">We download all blocks from block 0 to today. Our miners, the past jobs, the correct hash — our hits compared. Not against theory. Against <strong>reality</strong>.</span>
+      <span class="t-de" style="display:none">Wir holen alle Blöcke von Block 0 bis heute runter. Unsere Miner, die vergangenen Jobs, der richtige Hash — unsere Treffer werden verglichen. Nicht gegen Theorie. Gegen <strong>Realität</strong>.</span>
     </p>
 
     <div class="three-btns reveal" id="three-btns">
@@ -728,8 +694,8 @@ footer {
     </div>
 
     <p class="lead reveal">
-      Reichte nicht. Also entstand ein Ökosystem aus Ja und Nein.<br>
-      <span style="opacity:0.5; font-size:0.88em;">Not enough. So an ecosystem of Yes and No was born.</span>
+      <span class="t-en">Not enough. So an ecosystem of Yes and No was born.</span>
+      <span class="t-de" style="display:none">Reichte nicht. Also entstand ein Ökosystem aus Ja und Nein.</span>
     </p>
 
   </div>
@@ -741,16 +707,17 @@ footer {
 <section class="paper" id="kosmos">
   <div class="inner" style="text-align:center;">
 
-    <span class="eyebrow">05 · Das Ökosystem / The Ecosystem</span>
+    <span class="eyebrow"><span class="t-en">05 · The Ecosystem</span><span class="t-de" style="display:none">05 · Das Ökosystem</span></span>
     <div class="divider" style="margin:2rem auto;"></div>
 
-    <h2 class="mid reveal">Viele kleine Ja und Nein.<br>Ein lebender Kosmos.</h2>
+    <h2 class="mid reveal">
+      <span class="t-en">Many small Yes and No.<br>A living cosmos.</span>
+      <span class="t-de" style="display:none">Viele kleine Ja und Nein.<br>Ein lebender Kosmos.</span>
+    </h2>
 
     <p class="lead reveal" style="text-align:left;">
-      Jede Lampe ist ein Worker. Ein Kryptograf. Ein Urteil.
-      Grün = Signal. Lila = analysiert. Gelb = Near-Miss. Rot = Nichts — aber auch das ist Information.<br>
-      <span style="opacity:0.55; font-size:0.88em;">Every lamp is a worker. A cryptographer. A verdict.
-      Green = signal. Purple = analyzed. Yellow = near-miss. Red = nothing — but that too is information.</span>
+      <span class="t-en">Every lamp is a worker. A cryptographer. A verdict. Green = signal. Purple = analyzed. Yellow = near-miss. Red = nothing — but that too is information.</span>
+      <span class="t-de" style="display:none">Jede Lampe ist ein Worker. Ein Kryptograf. Ein Urteil. Grün = Signal. Lila = analysiert. Gelb = Near-Miss. Rot = Nichts — aber auch das ist Information.</span>
     </p>
 
     <div class="lamp-grid reveal" id="lamp-grid">
@@ -767,10 +734,11 @@ footer {
 <section class="dark" style="padding: 4rem 2rem;">
   <div class="inner" style="text-align:center;">
 
-    <span class="eyebrow">06 · Das Ergebnis / The Result</span>
+    <span class="eyebrow"><span class="t-en">06 · The Result</span><span class="t-de" style="display:none">06 · Das Ergebnis</span></span>
 
     <h2 class="mid reveal" style="margin-bottom: 3rem;">
-      Das alles ergibt<br>ein Uhrwerk.
+      <span class="t-en">All of this becomes<br>a clockwork.</span>
+      <span class="t-de" style="display:none">Das alles ergibt<br>ein Uhrwerk.</span>
     </h2>
 
     <div class="gears-wrap reveal">
@@ -871,7 +839,8 @@ footer {
     </div>
 
     <p class="gears-caption reveal">
-      Kryptografen · Ämter · Zitadellen · Welten · Ein Kosmos
+      <span class="t-en">Cryptographers · Offices · Citadels · Worlds · One Cosmos</span>
+      <span class="t-de" style="display:none">Kryptografen · Ämter · Zitadellen · Welten · Ein Kosmos</span>
     </p>
 
   </div>
@@ -883,19 +852,16 @@ footer {
 <section class="dark" id="erkenntnisse">
   <div class="wide">
 
-    <span class="eyebrow">07 · Unsere Erkenntnisse / Our Findings</span>
+    <span class="eyebrow"><span class="t-en">07 · Our Findings</span><span class="t-de" style="display:none">07 · Unsere Erkenntnisse</span></span>
 
     <h2 class="mid reveal" style="margin-top:1.5rem;">
-      Was macht Bitcoin<br>außergewöhnlich?
+      <span class="t-en">What makes Bitcoin<br>extraordinary?</span>
+      <span class="t-de" style="display:none">Was macht Bitcoin<br>außergewöhnlich?</span>
     </h2>
 
     <p class="lead reveal">
-      Nach monatelanger Analyse von 21.953 Patoshi-Blöcken, 8 Epochen,
-      und einem Ökosystem aus über 180 Workern zeigt sich ein Muster
-      das die Frage neu stellt.<br>
-      <span style="opacity:0.5; font-size:0.88em;">After months of analyzing 21,953 Patoshi blocks, 8 epochs,
-      and an ecosystem of 180+ workers — a pattern emerges
-      that reframes the question entirely.</span>
+      <span class="t-en">After months of analyzing 21,953 Patoshi blocks, 8 epochs, and an ecosystem of 180+ workers — a pattern emerges that reframes the question entirely.</span>
+      <span class="t-de" style="display:none">Nach monatelanger Analyse von 21.953 Patoshi-Blöcken, 8 Epochen, und einem Ökosystem aus über 180 Workern zeigt sich ein Muster das die Frage neu stellt.</span>
     </p>
 
     <table class="epoch-table reveal" id="epoch-table">
@@ -914,18 +880,19 @@ footer {
     </table>
 
     <p class="lead reveal" style="margin-top: 2rem;">
-      E1 (Satoshi) hat die <strong>niedrigste Difficulty aller Zeiten</strong> —
-      und sollte statistisch Zone-0 dominieren. Tut er nicht.
-      Er liegt 72% unter der physikalischen Erwartung.
-      <strong>Das ist kein Zufall. Das ist ein Fingerabdruck.</strong>
+      <span class="t-en">E1 (Satoshi) has the <strong>lowest difficulty in history</strong> — and should statistically dominate Zone-0. It doesn't. It sits 72% below the physical expectation. <strong>That is not chance. That is a fingerprint.</strong></span>
+      <span class="t-de" style="display:none">E1 (Satoshi) hat die <strong>niedrigste Difficulty aller Zeiten</strong> — und sollte statistisch Zone-0 dominieren. Tut er nicht. Er liegt 72% unter der physikalischen Erwartung. <strong>Das ist kein Zufall. Das ist ein Fingerabdruck.</strong></span>
     </p>
 
     <!-- Raumzeichner -->
-    <h2 class="mid reveal" style="margin-top: 4rem;">Dann haben wir<br>Raumzeichner.</h2>
+    <h2 class="mid reveal" style="margin-top: 4rem;">
+      <span class="t-en">Then we have<br>Space Painters.</span>
+      <span class="t-de" style="display:none">Dann haben wir<br>Raumzeichner.</span>
+    </h2>
 
     <p class="lead reveal">
-      Jeder Raumzeichner ist ein Fenster in eine andere Dimension der gleichen Frage.
-      Alle zusammen zeigen: <strong>der Raum ist nicht zufällig</strong>.
+      <span class="t-en">Each painter is a window into another dimension of the same question. Together they show: <strong>the space is not random</strong>.</span>
+      <span class="t-de" style="display:none">Jeder Raumzeichner ist ein Fenster in eine andere Dimension der gleichen Frage. Alle zusammen zeigen: <strong>der Raum ist nicht zufällig</strong>.</span>
     </p>
 
     <div class="raum-grid reveal" id="raum-grid">
@@ -964,7 +931,7 @@ footer {
 <section class="paper" id="coin">
   <div class="inner">
 
-    <span class="eyebrow">08 · Der Coin / The Coin</span>
+    <span class="eyebrow"><span class="t-en">08 · The Coin</span><span class="t-de" style="display:none">08 · Der Coin</span></span>
     <div class="divider"></div>
 
     <div class="syn-hero reveal">
@@ -996,12 +963,8 @@ footer {
     </div>
 
     <p class="lead reveal">
-      Der Coin ist keine Spekulation. Er ist der Beweis dass das System
-      existiert — und wächst. <strong>Wer mined, beobachtet.</strong>
-      Wer beobachtet, trägt bei. Wer beiträgt, verdient Synergy.<br>
-      <span style="opacity:0.55; font-size:0.88em;">The coin is not speculation. It's proof that the system
-      exists — and grows. <strong>Whoever mines, observes.</strong>
-      Whoever observes, contributes. Whoever contributes, earns Synergy.</span>
+      <span class="t-en">The coin is not speculation. It's proof that the system exists — and grows. <strong>Whoever mines, observes.</strong> Whoever observes, contributes. Whoever contributes, earns Synergy.</span>
+      <span class="t-de" style="display:none">Der Coin ist keine Spekulation. Er ist der Beweis dass das System existiert — und wächst. <strong>Wer mined, beobachtet.</strong> Wer beobachtet, trägt bei. Wer beiträgt, verdient Synergy.</span>
     </p>
 
     <p class="lead reveal" style="font-size:0.8rem; font-family: monospace; background: rgba(0,0,0,0.06); padding: 1rem; border-radius: 4px; word-break: break-all;">
@@ -1010,15 +973,15 @@ footer {
 
     <div class="fin-box reveal">
       <p style="color: #8b7355; font-size: 0.8rem; letter-spacing: 0.05em;">
-        Finanziell: Wie ist er abgesichert?<br>
-        <em>Das klären wir wenn das System etwas steigt.</em><br>
-        Die Forschung kommt zuerst. Der Wert folgt der Wahrheit.
+        <span class="t-en">Financial security: How is it backed?<br><em>We'll clarify that when the system rises.<br>Research comes first. Value follows truth.</em></span>
+        <span class="t-de" style="display:none">Finanziell: Wie ist er abgesichert?<br><em>Das klären wir wenn das System etwas steigt.<br>Die Forschung kommt zuerst. Der Wert folgt der Wahrheit.</em></span>
       </p>
     </div>
 
     <div style="text-align:center; margin-top: 3rem;">
       <a href="mine.html" class="btn btn-primary" style="font-size:1rem; padding: 1rem 3rem; text-decoration:none; background: #7c3aed; color: white; border-radius: 6px; letter-spacing: 0.05em;">
-        Jetzt Minen — Enter the Cosmos →
+        <span class="t-en">Start Mining — Enter the Cosmos →</span>
+        <span class="t-de" style="display:none">Jetzt Minen — Enter the Cosmos →</span>
       </a>
     </div>
 
@@ -1030,10 +993,10 @@ footer {
 ═══════════════════════════════════════════════ -->
 <section class="dark" id="contact" style="padding: 5rem 2rem; text-align:center;">
   <div class="inner reveal">
-    <span class="eyebrow">Kontakt · Privat finanzierte Wissenschaft</span>
+    <span class="eyebrow"><span class="t-en">Contact · Privately Financed Science</span><span class="t-de" style="display:none">Kontakt · Privat finanzierte Wissenschaft</span></span>
     <p class="lead" style="max-width:500px; margin: 1rem auto 2rem;">
-      Das ist privat finanzierte wissenschaftliche Forschung.
-      Universitäten, Forscher, Gleichgesinnte — meldet euch.
+      <span class="t-en">This is privately financed scientific research. Universities, researchers, like-minded — reach out.</span>
+      <span class="t-de" style="display:none">Das ist privat finanzierte wissenschaftliche Forschung. Universitäten, Forscher, Gleichgesinnte — meldet euch.</span>
     </p>
     <div class="contact-grid" style="justify-content:center;">
       <a href="tel:+4917672695482"             class="c-pill">📞 +49 176 72695482</a>
@@ -1051,8 +1014,8 @@ footer {
   EarnOS · Proof of Observation · The Cosmos is the Miner
   <br><br>
   <span style="color:var(--dim); font-style:italic;">
-    „War Satoshi ein Mensch, eine KI — oder ein System das sich durch Wirklichkeiten bewegte,
-    bis es zu etwas wurde?"
+    <span class="t-en">"Was Satoshi a human, an AI — or a system that moved through realities until it became something?"</span>
+    <span class="t-de" style="display:none">„War Satoshi ein Mensch, eine KI — oder ein System das sich durch Wirklichkeiten bewegte, bis es zu etwas wurde?"</span>
   </span>
 </footer>
 
@@ -1073,7 +1036,7 @@ function makeStar() {
            r: Math.random()*1.1+0.2, a: Math.random(),
            speed: Math.random()*0.003+0.001, drift: (Math.random()-0.5)*0.12 };
 }
-for (let i = 0; i < 110; i++) stars.push(makeStar());
+for (let i = 0; i < 77; i++) stars.push(makeStar());
 
 const particles = Array.from({length:12}, () => ({
   x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
@@ -1278,6 +1241,27 @@ function fillRaum(id, text) {
 
 loadLiveData();
 setInterval(loadLiveData, 30000);
+
+// ── Language Toggle ────────────────────────────────────────────
+let currentLang = localStorage.getItem('syn_lang') || 'en';
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('syn_lang', lang);
+  const enEls = document.querySelectorAll('.t-en');
+  const deEls = document.querySelectorAll('.t-de');
+  enEls.forEach(el => el.style.display = lang === 'en' ? '' : 'none');
+  deEls.forEach(el => el.style.display = lang === 'de' ? '' : 'none');
+  document.getElementById('lang-toggle').textContent = lang === 'en' ? 'DE' : 'EN';
+  document.documentElement.lang = lang;
+}
+
+function toggleLang() {
+  applyLang(currentLang === 'en' ? 'de' : 'en');
+}
+
+// Apply on load
+applyLang(currentLang);
 </script>
 
 </body>
