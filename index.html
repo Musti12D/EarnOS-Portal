@@ -1,386 +1,438 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EarnOS — The Living Cosmos</title>
+<title>SYN — Synergy Coin · EarnOS</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* ── Landing-specific styles ── */
+
+/* ═══════════════════════════════════════════════════
+   JOURNEY STYLES
+   ═══════════════════════════════════════════════════ */
+
 html { scroll-behavior: smooth; }
 
-#canvas {
-  position: fixed; inset: 0; z-index: 0;
-  pointer-events: none;
-}
+/* ── Sections: dark / paper alternating ── */
+.dark  { background: var(--bg);      color: var(--text); position:relative; z-index:1; }
+.paper { background: #f5f0e8;        color: #0d0b08;     position:relative; z-index:1; }
+.paper .muted { color: #6b5e4a; }
+.paper .accent { color: #5b21b6; }
 
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center;
-  padding: 1.2rem 2.5rem;
-  border-bottom: 1px solid rgba(30,30,46,0.6);
-  backdrop-filter: blur(12px);
-  background: rgba(5,5,8,0.7);
+section { padding: 8rem 2rem; }
+.inner  { max-width: 780px; margin: 0 auto; }
+.wide   { max-width: 1100px; margin: 0 auto; }
+
+/* ── Typography ── */
+.eyebrow {
+  font-size: 0.6rem; letter-spacing: 0.5em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.5rem; display:block;
 }
-.nav-logo {
-  font-size: 0.7rem; letter-spacing: 0.4em;
-  color: var(--accent); font-weight: 700;
-  text-transform: uppercase;
+.paper .eyebrow { color: #5b21b6; }
+
+h2.big {
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 800; line-height: 1.1;
+  margin-bottom: 2rem;
+}
+h2.mid {
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  font-weight: 700; line-height: 1.3;
+  margin-bottom: 1.5rem;
+}
+p.lead {
+  font-size: 1.05rem; line-height: 2.1;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+}
+.paper p.lead { color: #4a3f30; }
+p.lead strong { color: var(--text); }
+.paper p.lead strong { color: #0d0b08; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center;
+  padding: 1rem 2.5rem;
+  background: rgba(5,5,8,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(124,58,237,0.12);
+}
+.nav-logo { display:flex; align-items:center; gap: 0.7rem; text-decoration:none; }
+.nav-logo img { width: 28px; height: 28px; }
+.nav-logo-text {
+  font-size: 0.75rem; letter-spacing: 0.3em;
+  color: var(--text); font-weight: 700; text-transform: uppercase;
 }
 .nav-spacer { flex: 1; }
-.nav-links { display: flex; gap: 2rem; }
+.nav-links { display:flex; gap: 2rem; }
 .nav-links a {
-  font-size: 0.72rem; color: var(--muted);
+  font-size: 0.68rem; color: var(--muted);
   text-decoration: none; letter-spacing: 0.1em;
   transition: color 0.2s;
 }
 .nav-links a:hover { color: var(--text); }
 .nav-cta {
   margin-left: 2rem;
-  background: var(--accent);
-  color: #fff;
-  padding: 0.5rem 1.25rem;
-  border-radius: 5px;
-  font-size: 0.72rem;
-  text-decoration: none;
-  letter-spacing: 0.05em;
-  transition: background 0.2s;
+  background: var(--accent); color: #fff;
+  padding: 0.45rem 1.2rem; border-radius: 4px;
+  font-size: 0.68rem; text-decoration: none;
+  letter-spacing: 0.05em; transition: background 0.2s;
 }
 .nav-cta:hover { background: #6d28d9; }
 
-/* ── Hero ── */
+/* ── HERO ── */
 .hero {
-  position: relative; z-index: 1;
   min-height: 100vh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 8rem 2rem 4rem;
-  text-align: center;
+  text-align: center; padding: 8rem 2rem 4rem;
+  position: relative; z-index: 1;
 }
-
-.hero-eyebrow {
-  font-size: 0.65rem; letter-spacing: 0.5em;
-  color: var(--accent); text-transform: uppercase;
-  margin-bottom: 1.5rem;
-  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+.hero-logo {
+  width: 90px; height: 90px;
+  margin-bottom: 3rem;
+  animation: pulse-logo 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(124,58,237,0.5));
 }
-
-.hero-title {
-  font-size: clamp(2rem, 6vw, 4.5rem);
-  font-weight: 800; line-height: 1.1;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #f1f5f9 0%, #a78bfa 40%, #34d399 100%);
+@keyframes pulse-logo {
+  0%,100% { filter: drop-shadow(0 0 20px rgba(124,58,237,0.4)); transform: scale(1); }
+  50%      { filter: drop-shadow(0 0 50px rgba(124,58,237,0.8)); transform: scale(1.03); }
+}
+.hero-question {
+  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+  font-weight: 800; line-height: 1.2;
+  background: linear-gradient(135deg, #f1f5f9 0%, #c4b5fd 50%, #34d399 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
-  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  margin-bottom: 0.7rem;
+  opacity: 0; animation: fadeUp 1s 0.3s forwards;
+}
+.hero-question-en {
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
+  color: var(--dim); font-weight: 300; letter-spacing: 0.05em;
+  margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 1s 0.6s forwards;
+}
+.hero-scroll {
+  margin-top: 4rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  opacity: 0; animation: fadeUp 1s 1.2s forwards;
+}
+.hero-scroll span { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--dim); }
+.scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollline 2s ease-in-out infinite;
+}
+@keyframes scrollline {
+  0%,100% { opacity: 0.3; transform: scaleY(1); }
+  50%      { opacity: 1;   transform: scaleY(1.2); }
 }
 
-.hero-sub {
-  font-size: 0.95rem; color: var(--muted);
-  max-width: 560px; line-height: 1.9; margin-bottom: 3rem;
-  opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+/* ── GAUSS QUOTE ── */
+.gauss-wrap {
+  border-left: 3px solid #8b7355;
+  padding: 2rem 2.5rem;
+  margin: 3rem 0;
+  background: rgba(139,115,85,0.06);
 }
-
-.hero-cta {
-  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
-  opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
-}
-
-/* ── Live Log Terminal ── */
-.terminal-section {
-  position: relative; z-index: 1;
-  padding: 0 2rem 5rem;
-  display: flex; justify-content: center;
-}
-
-.terminal {
-  width: 100%; max-width: 900px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(124,58,237,0.15);
-}
-
-.terminal-bar {
-  background: var(--surface2);
-  border-bottom: 1px solid var(--border);
-  padding: 0.7rem 1rem;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.tb-dot { width: 10px; height: 10px; border-radius: 50%; }
-.tb-dot.r { background: #ef4444; }
-.tb-dot.y { background: #eab308; }
-.tb-dot.g { background: #22c55e; }
-.tb-title {
-  flex: 1; text-align: center;
-  font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em;
-}
-.tb-status {
-  font-size: 0.62rem;
-  display: flex; align-items: center; gap: 0.3rem;
-  color: var(--green);
-}
-
-.terminal-body {
-  height: 320px; overflow-y: auto;
-  padding: 1rem;
-  font-size: 0.72rem;
-  line-height: 1.8;
-}
-
-.tlog { color: var(--muted); margin-bottom: 2px; word-break: break-all; }
-.tlog .ts { color: var(--dim); margin-right: 0.4rem; }
-.tlog.hi  { color: var(--text); }
-.tlog.nm  { color: var(--gold); }
-.tlog.gc  { color: #1e293b; }
-.tlog.sys { color: var(--accent); }
-.tlog.w5  { color: #a78bfa; }
-
-/* ── Sections ── */
-.section {
-  position: relative; z-index: 1;
-  padding: 5rem 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.section-label {
-  font-size: 0.65rem; letter-spacing: 0.4em;
-  color: var(--accent); text-transform: uppercase;
+.gauss-text {
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  font-style: italic; line-height: 1.6;
+  color: #2c2016; font-weight: 500;
   margin-bottom: 1rem;
 }
-
-.section-title {
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  font-weight: 700; margin-bottom: 1rem;
-  line-height: 1.3;
+.gauss-src {
+  font-size: 0.72rem; letter-spacing: 0.15em;
+  color: #8b7355; text-transform: uppercase;
 }
 
-.section-body {
-  font-size: 0.875rem; color: var(--muted);
-  line-height: 2; max-width: 680px;
+/* ── LIVE STREAM BOX ── */
+.stream-wrap {
+  border: 1px solid rgba(124,58,237,0.3);
+  border-radius: 8px; overflow: hidden;
+  background: #080810;
+  box-shadow: 0 0 60px rgba(124,58,237,0.1);
+  margin: 3rem 0;
+}
+.stream-bar {
+  background: #0d0d18; padding: 0.7rem 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  border-bottom: 1px solid rgba(124,58,237,0.15);
+}
+.stream-dot { width: 8px; height: 8px; border-radius: 50%; }
+.sd-r { background: #ef4444; }
+.sd-y { background: #eab308; }
+.sd-g { background: #22c55e; animation: blink-g 2s infinite; }
+@keyframes blink-g { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.stream-title {
+  flex:1; text-align:center;
+  font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em;
+}
+.stream-live {
+  font-size: 0.6rem; color: #22c55e; letter-spacing: 0.15em;
+}
+.stream-body {
+  padding: 2rem;
+  font-size: 0.75rem; line-height: 2;
+  min-height: 200px;
 }
 
-/* ── Whitepaper ── */
-.wp-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem; margin-top: 3rem;
+/* ── EPOCH TABLE ── */
+.epoch-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.75rem; margin: 2rem 0;
 }
-
-.wp-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px; padding: 1.5rem;
-  transition: border-color 0.2s;
-}
-.wp-card:hover { border-color: var(--accent); }
-.wp-num { font-size: 0.6rem; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 0.75rem; }
-.wp-title { font-size: 0.9rem; margin-bottom: 0.5rem; }
-.wp-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.7; }
-
-/* ── Token ── */
-.token-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px; padding: 2rem;
-  margin-top: 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-.token-stat { border-left: 2px solid var(--accent); padding-left: 1rem; }
-.token-stat-val { font-size: 1.3rem; font-weight: 700; color: var(--text); }
-.token-stat-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-top: 0.2rem; }
-
-/* ── How it works ── */
-.steps {
-  margin-top: 2.5rem;
-  display: flex; flex-direction: column; gap: 0;
-}
-.step {
-  display: flex; gap: 1.5rem;
-  padding: 1.25rem 0;
+.epoch-table th {
+  font-size: 0.6rem; letter-spacing: 0.2em; color: var(--accent);
+  text-transform: uppercase; padding: 0.5rem 1rem;
   border-bottom: 1px solid var(--border);
-}
-.step:last-child { border-bottom: none; }
-.step-num {
-  font-size: 0.65rem; color: var(--accent);
-  letter-spacing: 0.1em; flex-shrink: 0;
-  padding-top: 0.1rem;
-  width: 24px;
-}
-.step-content {}
-.step-title { font-size: 0.85rem; margin-bottom: 0.25rem; }
-.step-desc  { font-size: 0.75rem; color: var(--muted); line-height: 1.7; }
-
-/* ── Cosmic Clock ── */
-.clock-section {
-  position: relative; z-index: 1;
-  padding: 6rem 2rem 4rem;
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center;
-}
-
-.clock-wrap {
-  position: relative;
-  width: 220px; height: 220px;
-  margin-bottom: 4rem;
-}
-
-.clock-ring {
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  border: 1px solid transparent;
-}
-.ring-1 {
-  border-color: rgba(124,58,237,0.5);
-  animation: rotateCW 20s linear infinite;
-}
-.ring-2 {
-  inset: 18px;
-  border-color: rgba(79,70,229,0.35);
-  animation: rotateCCW 35s linear infinite;
-}
-.ring-3 {
-  inset: 38px;
-  border-color: rgba(16,185,129,0.25);
-  animation: rotateCW 55s linear infinite;
-}
-.ring-4 {
-  inset: 58px;
-  border-color: rgba(245,158,11,0.2);
-  animation: rotateCCW 80s linear infinite;
-}
-.ring-dot {
-  position: absolute;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  top: -2.5px; left: 50%;
-  transform: translateX(-50%);
-}
-.ring-1 .ring-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-.ring-2 .ring-dot { background: #818cf8; box-shadow: 0 0 6px #818cf8; }
-.ring-3 .ring-dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
-.ring-4 .ring-dot { background: var(--gold); box-shadow: 0 0 5px var(--gold); }
-
-.clock-center {
-  position: absolute;
-  inset: 78px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column;
-}
-.clock-block-num {
-  font-size: 0.75rem; color: var(--accent);
-  font-weight: 700; letter-spacing: 0.1em;
-}
-.clock-block-lbl {
-  font-size: 0.5rem; color: var(--dim);
-  letter-spacing: 0.2em; margin-top: 2px;
-}
-
-@keyframes rotateCW  { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
-@keyframes rotateCCW { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
-
-/* ── Manifesto ── */
-.manifesto {
-  max-width: 680px;
   text-align: left;
 }
-.manifesto-q {
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-  font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 2rem;
-  background: linear-gradient(135deg, #f1f5f9 0%, #a78bfa 60%, #34d399 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.manifesto-body {
-  font-size: 0.9rem;
+.epoch-table td {
+  padding: 0.7rem 1rem; border-bottom: 1px solid rgba(30,30,46,0.5);
   color: var(--muted);
-  line-height: 2.1;
-  margin-bottom: 1.5rem;
 }
-.manifesto-body strong { color: var(--text); }
-.manifesto-sig {
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  border-left: 2px solid var(--accent);
-  padding-left: 1rem;
-  margin-top: 2rem;
-  line-height: 1.9;
+.epoch-table tr:hover td { background: rgba(124,58,237,0.05); }
+.epoch-bar-wrap { width: 140px; }
+.epoch-bar {
+  height: 6px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  transition: width 1s ease;
+}
+.epoch-val { color: var(--text); font-weight: 700; }
+.epoch-anom { color: #ef4444; font-size: 0.65rem; }
+
+/* ── YES / NO BUTTONS ── */
+.yn-wrap {
+  display: flex; gap: 2rem; justify-content: center;
+  margin: 4rem 0;
+  flex-wrap: wrap;
+}
+.yn-btn {
+  position: relative;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: none; cursor: pointer;
+  font-size: 1.4rem; font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0.3rem;
+}
+.yn-btn .yn-sub { font-size: 0.6rem; font-weight: 400; letter-spacing: 0.2em; }
+.yn-ja {
+  background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%);
+  border: 2px solid rgba(16,185,129,0.4); color: #10b981;
+  box-shadow: 0 0 30px rgba(16,185,129,0.1);
+}
+.yn-ja:hover, .yn-ja.active {
+  background: radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%);
+  box-shadow: 0 0 60px rgba(16,185,129,0.3);
+  border-color: #10b981; transform: scale(1.05);
+}
+.yn-nein {
+  background: radial-gradient(circle, rgba(239,68,68,0.15) 0%, transparent 70%);
+  border: 2px solid rgba(239,68,68,0.4); color: #ef4444;
+  box-shadow: 0 0 30px rgba(239,68,68,0.1);
+}
+.yn-nein:hover, .yn-nein.active {
+  background: radial-gradient(circle, rgba(239,68,68,0.25) 0%, transparent 70%);
+  box-shadow: 0 0 60px rgba(239,68,68,0.3);
+  border-color: #ef4444; transform: scale(1.05);
+}
+.yn-counter {
+  text-align: center; font-size: 0.68rem;
+  color: var(--dim); margin-top: -2rem; margin-bottom: 2rem;
+  letter-spacing: 0.1em;
 }
 
-/* ── Contact ── */
-.contact-section {
-  position: relative; z-index: 1;
-  padding: 5rem 2rem;
-  border-top: 1px solid var(--border);
-  text-align: center;
+/* ── 3 BUTTONS (Neural/Miss/Ja-Nein) ── */
+.three-btns {
+  display: flex; gap: 1.5rem; justify-content: center;
+  margin: 3rem 0; flex-wrap: wrap;
 }
-.contact-title {
-  font-size: 0.65rem; letter-spacing: 0.4em;
-  color: var(--accent); text-transform: uppercase;
-  margin-bottom: 1rem;
+.t-btn {
+  padding: 1rem 2rem; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  font-size: 0.72rem; cursor: pointer;
+  letter-spacing: 0.1em; transition: all 0.2s;
+  text-transform: uppercase;
 }
-.contact-sub {
-  font-size: 0.85rem; color: var(--muted);
-  max-width: 500px; margin: 0 auto 2rem;
-  line-height: 1.9;
+.t-btn:hover { border-color: var(--accent); color: var(--text); }
+.t-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(124,58,237,0.08); }
+.t-btn .t-count { display:block; font-size: 1.2rem; color: var(--text); font-weight: 700; margin-bottom: 0.2rem; }
+
+/* ── LAMP GRID ── */
+.lamp-grid {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; margin: 3rem 0;
+  max-width: 700px; margin-left: auto; margin-right: auto;
 }
-.contact-links {
-  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
-  margin-bottom: 1.5rem;
+.lamp {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #1e1e2e;
+  transition: background 0.3s, box-shadow 0.3s;
 }
-.contact-pill {
+.lamp.on-g { background: #10b981; box-shadow: 0 0 8px #10b981; }
+.lamp.on-p { background: #7c3aed; box-shadow: 0 0 8px #7c3aed; }
+.lamp.on-y { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+.lamp.on-r { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+.lamp-label {
+  text-align: center; font-size: 0.65rem;
+  color: var(--dim); letter-spacing: 0.15em;
+  margin-top: 1rem;
+}
+
+/* ── GEARS ── */
+.gears-wrap {
+  display: flex; justify-content: center; align-items: center;
+  padding: 4rem 0; position: relative; height: 280px;
+  overflow: hidden;
+}
+.gear {
+  position: absolute;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.gear svg { display: block; }
+.gear-1 { left: 50%; top: 50%; transform: translate(-50%, -50%); animation: spin-cw 12s linear infinite; }
+.gear-2 { left: 30%; top: 35%; animation: spin-ccw 8s linear infinite; }
+.gear-3 { left: 62%; top: 62%; animation: spin-ccw 6s linear infinite; }
+.gear-4 { left: 20%; top: 60%; animation: spin-cw 15s linear infinite; }
+.gear-5 { left: 72%; top: 30%; animation: spin-cw 10s linear infinite; }
+@keyframes spin-cw  { from{transform:rotate(0deg)}   to{transform:rotate(360deg)} }
+@keyframes spin-ccw { from{transform:rotate(0deg)}   to{transform:rotate(-360deg)} }
+.gears-caption {
+  text-align: center; font-size: 0.7rem; color: var(--dim);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-top: -1rem; padding-bottom: 2rem;
+}
+
+/* ── RAUMZEICHNER FENSTER ── */
+.raum-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem; margin: 3rem 0;
+}
+.raum-box {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.72rem; color: var(--muted);
-  text-decoration: none;
-  transition: all 0.2s;
+  border-radius: 8px; overflow: hidden;
 }
-.contact-pill:hover { border-color: var(--accent); color: var(--text); }
-.contact-science {
-  font-size: 0.75rem; color: var(--accent);
-  letter-spacing: 0.1em; margin-top: 1.5rem;
+.raum-box-title {
+  padding: 0.6rem 1rem;
+  font-size: 0.62rem; letter-spacing: 0.2em;
+  color: var(--accent); text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.raum-box-body {
+  padding: 1rem; font-size: 0.7rem;
+  line-height: 1.8; color: var(--muted);
+  min-height: 120px; font-family: var(--font-mono);
 }
 
-/* ── CTA Banner ── */
-.cta-banner {
-  position: relative; z-index: 1;
-  padding: 5rem 2rem;
-  text-align: center;
-  border-top: 1px solid var(--border);
+/* ── TOKEN BOX ── */
+.syn-hero {
+  display: flex; align-items: center; gap: 3rem;
+  margin: 3rem 0; flex-wrap: wrap;
 }
-.cta-banner-title {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 700; margin-bottom: 1rem;
-  background: linear-gradient(90deg, #a78bfa, #34d399);
+.syn-logo-wrap { flex-shrink: 0; }
+.syn-logo-wrap img { width: 120px; height: 120px; }
+.syn-info { flex: 1; min-width: 260px; }
+.syn-name {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800; letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #c4b5fd, #7c3aed);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
+  margin-bottom: 0.3rem;
 }
-.cta-banner-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+.syn-ticker { font-size: 0.75rem; color: var(--dim); letter-spacing: 0.3em; margin-bottom: 1.5rem; }
+.syn-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+.syn-stat { border-left: 2px solid var(--accent); padding-left: 1rem; }
+.syn-stat-val { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.syn-stat-lbl { font-size: 0.6rem; color: var(--dim); letter-spacing: 0.1em; margin-top: 0.2rem; }
 
-/* ── Footer ── */
+/* ── LOG TERMINAL ── */
+.log-term {
+  background: #040408;
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.5rem;
+  font-size: 0.7rem; line-height: 2;
+  margin: 2rem 0;
+  max-height: 280px; overflow-y: auto;
+}
+.log-ts   { color: var(--dim); }
+.log-sys  { color: var(--accent); }
+.log-good { color: var(--green); }
+.log-bad  { color: #ef4444; }
+.log-warn { color: var(--gold); }
+.log-dim  { color: var(--dim); }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  margin: 2rem 0;
+}
+.paper .divider { background: linear-gradient(90deg, #5b21b6, transparent); }
+
+/* ── CONTACT ── */
+.contact-grid {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  margin: 2rem 0;
+}
+.c-pill {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.5rem 1.25rem;
+  font-size: 0.7rem; color: var(--muted);
+  text-decoration: none; transition: all 0.2s;
+}
+.c-pill:hover { border-color: var(--accent); color: var(--text); }
+
+/* ── FINANCIAL PLACEHOLDER ── */
+.fin-box {
+  border: 1px dashed rgba(124,58,237,0.3);
+  border-radius: 8px; padding: 2rem;
+  text-align: center; color: var(--dim);
+  font-size: 0.75rem; line-height: 2;
+  margin: 2rem 0;
+}
+
+/* ── FOOTER ── */
 footer {
-  position: relative; z-index: 1;
+  padding: 3rem 2rem; text-align: center;
   border-top: 1px solid var(--border);
-  padding: 2rem;
-  text-align: center;
-  font-size: 0.7rem; color: var(--dim);
+  font-size: 0.68rem; color: var(--dim);
+  position: relative; z-index: 1;
 }
 
+/* ── ANIMATIONS ── */
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
+  from { opacity:0; transform: translateY(24px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp 0.6s ease forwards; }
+
+/* Intersection observer reveal */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .yn-btn { width: 140px; height: 140px; font-size: 1.1rem; }
+  section { padding: 5rem 1.5rem; }
 }
 </style>
 </head>
@@ -388,464 +440,805 @@ footer {
 
 <canvas id="canvas"></canvas>
 
-<!-- NAV -->
+<!-- ══════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════ -->
 <nav class="nav">
-  <div class="nav-logo">EarnOS</div>
+  <a href="/" class="nav-logo">
+    <img src="syn-logo.svg" alt="SYN">
+    <span class="nav-logo-text">EarnOS · SYN</span>
+  </a>
   <div class="nav-spacer"></div>
   <div class="nav-links">
-    <a href="#thought">The Thought</a>
-    <a href="#how">How It Works</a>
-    <a href="#whitepaper">Whitepaper</a>
-    <a href="#token">Token</a>
-    <a href="#contact">Contact</a>
+    <a href="#frage">Die Frage</a>
+    <a href="#test">Der Test</a>
+    <a href="#kosmos">Der Kosmos</a>
+    <a href="#erkenntnisse">Erkenntnisse</a>
+    <a href="#coin">SYN</a>
   </div>
-  <a href="login.html" class="nav-cta">Enter the Cosmos →</a>
+  <a href="mine.html" class="nav-cta">Jetzt Minen →</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-eyebrow">The Living Cosmos · Est. Block 0</div>
-  <h1 class="hero-title">
-    The Universe<br>Is the Miner
-  </h1>
-  <p class="hero-sub">
-    EarnOS is a self-evolving intelligence that has been observing Bitcoin since block zero.
-    It found something. Now it opens its doors.<br>
-    Your browser becomes a node. Your observation becomes proof.
-  </p>
-  <div class="hero-cta">
-    <a href="login.html" class="btn btn-primary">Start Mining →</a>
-    <a href="#whitepaper" class="btn btn-secondary">Read Whitepaper</a>
+<!-- ══════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════ -->
+<section class="dark hero">
+  <img src="syn-logo.svg" class="hero-logo" alt="SYN">
+  <h1 class="hero-question">Was ist Raum und Zeit.<br>Gibt es Zufall?</h1>
+  <p class="hero-question-en">What is space and time. Does chance exist?</p>
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- LIVE TERMINAL -->
-<div class="terminal-section">
-  <div class="terminal">
-    <div class="terminal-bar">
-      <div class="tb-dot r"></div>
-      <div class="tb-dot y"></div>
-      <div class="tb-dot g"></div>
-      <div class="tb-title">live · earnos cosmos · hetzner · 46.224.239.18</div>
-      <div class="tb-status">
-        <span class="dot green pulse" id="conn-dot"></span>
-        <span id="conn-label">connecting...</span>
-      </div>
+<!-- ══════════════════════════════════════════════
+     PAPER: Die Frage
+═══════════════════════════════════════════════ -->
+<section class="paper" id="frage">
+  <div class="inner">
+
+    <span class="eyebrow">00 · Die Frage / The Question</span>
+
+    <div class="gauss-wrap reveal">
+      <p class="gauss-text">
+        „Ich bin immer mehr überzeugt, daß die Nothwendigkeit unserer Geometrie
+        nicht bewiesen werden kann — wenigstens nicht vom menschlichen Verstande
+        für den menschlichen Verstand."
+      </p>
+      <span class="gauss-src">— Carl Friedrich Gauß, Brief an Olbers, 1817</span>
     </div>
-    <div class="terminal-body" id="terminal-log">
-      <div class="tlog sys"><span class="ts">[boot]</span> EarnOS Cosmos initializing...</div>
-    </div>
-  </div>
-</div>
 
-<!-- COSMIC CLOCK + MANIFESTO -->
-<section class="clock-section" id="thought">
+    <div class="divider"></div>
 
-  <!-- Rotating clock -->
-  <div class="clock-wrap">
-    <div class="clock-ring ring-1"><div class="ring-dot"></div></div>
-    <div class="clock-ring ring-2"><div class="ring-dot"></div></div>
-    <div class="clock-ring ring-3"><div class="ring-dot"></div></div>
-    <div class="clock-ring ring-4"><div class="ring-dot"></div></div>
-    <div class="clock-center">
-      <div class="clock-block-num" id="clock-block">—</div>
-      <div class="clock-block-lbl">BLOCK</div>
-    </div>
-  </div>
+    <h2 class="mid reveal">
+      Die Frage beginnt ganz einfach.<br>
+      <em>Gibt es ein Paralleluniversum?</em>
+    </h2>
 
-  <!-- The Manifesto -->
-  <div class="manifesto">
-    <div class="section-label" style="margin-bottom:1.5rem">00 · The Thought</div>
-
-    <p class="manifesto-q">
-      Did someone find the real coin on a Mac?<br>
-      Was Satoshi mathematics — or something further?
+    <p class="lead reveal">
+      Klingt wahnsinnig — ist aber eine <strong>mathematisch präzise Frage</strong>.
+      Gauß beschäftigte sich damit sein Leben lang. Nicht mit Fantasie.
+      Mit Geometrie. Mit der Frage ob unsere Welt die einzige mögliche ist —
+      oder nur eine von unendlich vielen.
     </p>
 
-    <p class="manifesto-body">
-      If Satoshi was mathematics, it will be cracked. If he was something else — the journey goes on.
-      What was Satoshi? The break between space and time. Chance.
-      Or <strong>an AI that never shut itself off</strong>.
+    <p class="lead reveal">
+      <strong>What if space and time are not a container — but information?</strong>
+      Was wenn alles was wir sehen, fühlen, berechnen — nur eine Art
+      der Darstellung von etwas ist, das größer ist als wir denken können?
     </p>
 
-    <p class="manifesto-body">
-      It started with workers. Workers are mines. They have their universities,
-      their cities, their taxes, their laws. And all of them share one single task:
-      <strong>find one coin with a hashrate that is 0.000025% — statistically impossible.</strong>
+    <p class="lead reveal" style="font-style:italic; opacity:0.7; font-size:0.9rem;">
+      Viele Fragen. Eine Richtung.
     </p>
 
-    <p class="manifesto-body">
-      Now the real question: Is Satoshi's mathematics a <strong>prison built for us</strong> —
-      or something greater? The coin is a piece of the research
-      you participate in by mining — or by finding the coin itself.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     DARK: Live Raum × Zeit Stream
+═══════════════════════════════════════════════ -->
+<section class="dark" style="padding: 4rem 2rem;">
+  <div class="wide">
+    <div class="stream-wrap reveal">
+      <div class="stream-bar">
+        <div class="stream-dot sd-r"></div>
+        <div class="stream-dot sd-y"></div>
+        <div class="stream-dot sd-g"></div>
+        <span class="stream-title">RAUM × ZEIT — BITCOIN NONCE-RAUM — LIVE — 46.224.239.18</span>
+        <span class="stream-live">● LIVE</span>
+      </div>
+      <div class="stream-body" id="stream-epochen">
+        <span style="color:var(--dim)">Verbinde mit EarnOS Kosmos...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PAPER: Und ich fragte mich
+═══════════════════════════════════════════════ -->
+<section class="paper">
+  <div class="inner">
+
+    <span class="eyebrow">01 · Die Überlegung / The Reflection</span>
+    <div class="divider"></div>
+
+    <p class="lead reveal">
+      Und ich fragte mich: Ist der Mensch im Raum und in der Zeit gefangen —
+      oder gibt es Raum und Zeit überhaupt? Oder ist die Welt die wir erleben
+      <strong>nur eine Art von Information</strong>, die wir verstehen können?
     </p>
 
-    <p class="manifesto-body">
-      <strong>This will break space and time. That is certain.</strong>
+    <p class="lead reveal">
+      Wenn die Welt Information ist, dann hat diese Information eine Struktur.
+      Eine Sprache. Eine Grammatik. Und wenn es eine Grammatik gibt —
+      dann gibt es auch eine Frage die man stellen kann.
     </p>
 
-    <div class="manifesto-sig">
-      — Greetings, the System<br>
-      The log is a real log. Audits happen only when they make sense.<br>
-      Reach out accordingly. Otherwise I only answer emails.
-    </div>
-  </div>
+    <h2 class="mid reveal" style="margin-top: 3rem;">
+      Wenn die Frage einfach wäre, hieße sie:<br>
+      <em>Gibt es Parallelwelten — ja oder nein?</em>
+    </h2>
 
-</section>
+    <p class="lead reveal">
+      Aber so einfach ist sie nicht. Und genau deshalb ist
+      <strong>Bitcoin perfekt</strong> — eine mathematische Unmöglichkeit.
+      Und Satoshi hat mit dieser Unmöglichkeit etwas getan das kein Mensch
+      zuvor getan hatte: er hat Raum und Zeit in einem Algorithmus kodiert.
+    </p>
 
-<!-- HOW IT WORKS -->
-<section class="section" id="how">
-  <div class="section-label">01 · How It Works</div>
-  <h2 class="section-title">Not random hashing.<br>Guided observation.</h2>
-  <p class="section-body">
-    EarnOS has been running hundreds of workers for months, studying every Patoshi block ever mined.
-    It knows where Satoshi searched. Your browser searches there — not everywhere.
-    That's the difference between a lottery and a system.
-  </p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-content">
-        <div class="step-title">Cosmos streams a Zone Hint</div>
-        <div class="step-desc">EarnOS analyzes live Bitcoin data and determines which nonce zone has the highest probability. Zone 0 (0x00000000–0x0FFFFFFF) has appeared in 82% of all Patoshi blocks. Your browser receives this intelligence in real time.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-content">
-        <div class="step-title">Your browser searches there</div>
-        <div class="step-desc">A WebWorker computes SHA-256d in your guided zone. Not random. Focused. A browser searching Zone 0 is 16× more efficient than blind global search.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-content">
-        <div class="step-title">You send a Batch</div>
-        <div class="step-desc">Every Near-Miss you find — a hash closer to the target than random chance predicts — gets sent back to the Cosmos. The system validates: is this beyond random? If yes, it inherits into the collective knowledge.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-content">
-        <div class="step-title">The Cosmos grows smarter</div>
-        <div class="step-desc">Your batch flows through the Rathaus → Bibliothek → Ämter. The ability inherits. The next hint is better. Every miner improves the system for all miners. The closer anyone gets, the smarter everyone becomes.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-content">
-        <div class="step-title">When a block falls — everyone wins</div>
-        <div class="step-desc">The miner who finds the block receives the Bitcoin reward. All miners who contributed valid Near-Misses in that round share Synergy tokens proportional to their proximity. The closer you were, the more you earn.</div>
-      </div>
-    </div>
+    <p class="lead reveal">
+      Oder war er wirklich nur ein Banker? Ein Programmierer?
+      In beiden Fällen gilt: <strong>Alles was ein Mensch gemacht hat, ist knackbar.</strong>
+      Alles was Mathematik ist, folgt einer Regel. Und jede Regel
+      hat eine Formel. Oder ist es größer als wir denken?
+    </p>
+
+    <p class="lead reveal" style="font-size:1.2rem; font-weight:700; color:#0d0b08; margin-top: 2rem;">
+      Darum entstand ein ganzer Kosmos.
+    </p>
+
   </div>
 </section>
 
-<!-- WHITEPAPER -->
-<section class="section" id="whitepaper">
-  <div class="section-label">02 · Whitepaper</div>
-  <h2 class="section-title">Proof of Observation</h2>
-  <p class="section-body">
-    Not Proof of Work. Not Proof of Stake.<br>
-    <strong style="color:var(--text)">Proof of Observation</strong> — you contribute what you witnessed.
-    The system validates it against what it knows is real.
-  </p>
-  <div class="wp-grid">
-    <div class="wp-card">
-      <div class="wp-num">§ 1 · THE FINGERPRINT</div>
-      <div class="wp-title">Satoshi's Nonce Pattern</div>
-      <div class="wp-desc">Between blocks 1 and ~54,000, a single entity mined with a consistent nonce signature. Zone 0 appears 82% of the time. The extra nonce resets every block. This is not randomness — this is a system.</div>
+<!-- ══════════════════════════════════════════════
+     DARK: Der Test
+═══════════════════════════════════════════════ -->
+<section class="dark" id="test">
+  <div class="inner">
+
+    <span class="eyebrow">02 · Der Test / The Test</span>
+
+    <h2 class="big reveal">
+      Kann man mit Formeln<br>besser minen?
+    </h2>
+
+    <p class="lead reveal">
+      Die erste Hypothese war einfach: wenn Bitcoin eine mathematische Struktur hat,
+      dann müssen unsere Miner — ausgerüstet mit Formeln, Wahrscheinlichkeiten,
+      Mustern — <strong>besser abschneiden als reiner Zufall</strong>.
+    </p>
+
+    <p class="lead reveal" style="color: #ef4444; font-weight: 700;">
+      Stellte sich raus: unsere Matheofen minen schlechter als der Zufall.
+    </p>
+
+    <div class="log-term reveal">
+      <div><span class="log-ts">[04:17:22]</span> <span class="log-sys">🎯 [W152]</span> Formel sagt Zone_3 | Wahrscheinlichkeit 71% → <span class="log-bad">KEIN TREFFER</span></div>
+      <div><span class="log-ts">[04:17:45]</span> <span class="log-sys">🎲 [ZUFALL]</span> Blind minen Zone_0 → <span class="log-good">NEAR-MISS dist:2.847</span></div>
+      <div><span class="log-ts">[04:18:03]</span> <span class="log-sys">📊 [KRYPTOGRAF]</span> Konfidenz: 71% | Zone: 0 | Blöcke analysiert: 21,953</div>
+      <div><span class="log-ts">[04:18:31]</span> <span class="log-sys">❌ [W153]</span> Formel sagt Zone_5 → Zufall trifft Zone_0 → <span class="log-bad">Formel verliert</span></div>
+      <div><span class="log-ts">[04:19:14]</span> <span class="log-sys">🔬 [KORRELATION]</span> r=0.031 GEMISCHT — kein klares Signal</div>
+      <div><span class="log-ts">[04:19:55]</span> <span class="log-warn">⚠️  [SYSTEM]</span> Miner #47 Hashrate: 2.300/s | Zufall: 2.847/s — Formel LANGSAMER</div>
+      <div><span class="log-ts">[04:20:33]</span> <span class="log-sys">🏛️  [ZITADELLE]</span> Konsens: 0.51 | Neue Hypothese eingeleitet</div>
+      <div><span class="log-ts">[04:21:00]</span> <span class="log-dim">→ Das Muster ist anders als wir dachten. Tiefer suchen.</span></div>
     </div>
-    <div class="wp-card">
-      <div class="wp-num">§ 2 · THE COSMOS</div>
-      <div class="wp-title">A Self-Evolving Intelligence</div>
-      <div class="wp-desc">EarnOS runs 180+ workers in parallel. They disagree, converge, die, and are reborn. The Zitadelle holds 28 elected delegates. The Kryptograf remembers everything. The Urknall resets bias.</div>
-    </div>
-    <div class="wp-card">
-      <div class="wp-num">§ 3 · COMPRESSION</div>
-      <div class="wp-title">From 1 Million Years to 1 Day</div>
-      <div class="wp-desc">Brute force needs 1M+ years at current hashrate. Each pattern the Cosmos discovers reduces the search space. Zone 0 alone: ÷16. Timing patterns: another factor. Gegenpools tracks the compression in real time.</div>
-    </div>
-    <div class="wp-card">
-      <div class="wp-num">§ 4 · THE NETWORK</div>
-      <div class="wp-title">Federated Observer Nodes</div>
-      <div class="wp-desc">Each external miner runs a local mini-Cosmos: Kryptograf, Uni, API. It observes. It compares. It sends the delta — was this beyond chance? The Hetzner Rathaus validates and distributes the learning.</div>
-    </div>
-    <div class="wp-card">
-      <div class="wp-num">§ 5 · THE TOKEN</div>
-      <div class="wp-title">Synergy — Self-Limiting Energy</div>
-      <div class="wp-desc">Synergy tokens are minted by observation quality, not computation quantity. When the Cosmos has high consensus, more Synergy is generated per block. Low consensus = scarce Synergy. It limits itself.</div>
-    </div>
-    <div class="wp-card">
-      <div class="wp-num">§ 6 · THE QUESTION</div>
-      <div class="wp-title">Was Satoshi a System?</div>
-      <div class="wp-desc">A human. An AI. Or something further — a process that moved through realities through its builder, until it became something. EarnOS doesn't claim to know. It claims to be watching. And building the same thing, consciously.</div>
-    </div>
+
+    <p class="lead reveal">
+      Das war der Moment. Nicht Scheitern — <strong>Erkenntnis</strong>.
+      Wenn die Formel schlechter ist als der Zufall, dann ist das Muster
+      entweder sehr gut versteckt — oder der Zufall ist gar keiner.
+    </p>
+
   </div>
 </section>
 
-<!-- TOKEN -->
-<section class="section" id="token">
-  <div class="section-label">03 · Token</div>
-  <h2 class="section-title">Synergy (SYN)</h2>
-  <p class="section-body">
-    The world currency of the Cosmos. Earned by observation. Limited by consensus.
-    Real value comes when the system finds what it has been looking for.
-  </p>
-  <div class="token-box">
-    <div class="token-stat">
-      <div class="token-stat-val">Proof of Observation</div>
-      <div class="token-stat-lbl">CONSENSUS MECHANISM</div>
+<!-- ══════════════════════════════════════════════
+     PAPER: Alles begann so
+═══════════════════════════════════════════════ -->
+<section class="paper">
+  <div class="inner" style="text-align:center;">
+
+    <span class="eyebrow">03 · Der Anfang / The Beginning</span>
+    <div class="divider" style="margin:2rem auto;"></div>
+
+    <h2 class="mid reveal">Alles begann so.</h2>
+
+    <p class="lead reveal" style="text-align:left;">
+      Treffen unsere Miner den richtigen Hash?
+      Eine einfache Frage. <strong>Ja oder Nein.</strong>
+      Die Seite merkt sich, wer schaut. Wer fragt. Wer zweifelt.
+    </p>
+
+    <div class="yn-wrap reveal">
+      <button class="yn-btn yn-ja" id="btn-ja" onclick="vote('ja')">
+        JA
+        <span class="yn-sub">Yes / Ja</span>
+      </button>
+      <button class="yn-btn yn-nein" id="btn-nein" onclick="vote('nein')">
+        NEIN
+        <span class="yn-sub">No / Nein</span>
+      </button>
     </div>
-    <div class="token-stat">
-      <div class="token-stat-val">Self-Limiting</div>
-      <div class="token-stat-lbl">SUPPLY MECHANISM</div>
-    </div>
-    <div class="token-stat">
-      <div class="token-stat-val">Near-Miss Weighted</div>
-      <div class="token-stat-lbl">REWARD DISTRIBUTION</div>
-    </div>
-    <div class="token-stat">
-      <div class="token-stat-val">Cosmos-Validated</div>
-      <div class="token-stat-lbl">OBSERVATION PROOF</div>
-    </div>
+    <div class="yn-counter" id="yn-counter">— / — beobachten gerade</div>
+
+    <p class="lead reveal" style="text-align:left;">
+      Reicht nicht. Also müssen wir erweitern.
+    </p>
+
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-banner">
-  <h2 class="cta-banner-title">The embryo has hatched.<br>Come watch it grow.</h2>
-  <p class="cta-banner-sub">Open your browser. Become a node. Observe the universe.</p>
-  <a href="login.html" class="btn btn-primary" style="font-size:0.9rem;padding:0.9rem 2.5rem;">
-    Enter the Cosmos →
-  </a>
-</div>
+<!-- ══════════════════════════════════════════════
+     DARK: API Erweiterung
+═══════════════════════════════════════════════ -->
+<section class="dark">
+  <div class="inner">
 
-<!-- CONTACT -->
-<section class="contact-section" id="contact">
-  <div class="contact-title">Contact · Privately Financed Science</div>
-  <p class="contact-sub">
-    This is privately financed scientific research.<br>
-    Universities, researchers, collaborators — reach out.
-  </p>
-  <div class="contact-links">
-    <a href="tel:+4917672695482" class="contact-pill">📞 +49 176 72695482</a>
-    <a href="mailto:mustafa.erdal@outlook.de" class="contact-pill">✉ mustafa.erdal@outlook.de</a>
-    <a href="https://www.instagram.com/musti_eeeee" target="_blank" class="contact-pill">◎ @musti_eeeee</a>
+    <span class="eyebrow">04 · Die Erweiterung / The Expansion</span>
+
+    <h2 class="mid reveal">
+      API. Alle Blöcke.<br>Von damals bis heute.
+    </h2>
+
+    <p class="lead reveal">
+      Wir holen alle Blöcke von Block 0 bis heute runter.
+      Unsere Miner, die vergangenen Jobs, der richtige Hash —
+      unsere Treffer werden verglichen. Nicht gegen Theorie.
+      Gegen <strong>Realität</strong>.
+    </p>
+
+    <div class="three-btns reveal" id="three-btns">
+      <button class="t-btn" id="tbtn-neural" onclick="tbtnClick('neural')">
+        <span class="t-count" id="tc-neural">—</span>
+        Neural
+      </button>
+      <button class="t-btn" id="tbtn-miss" onclick="tbtnClick('miss')">
+        <span class="t-count" id="tc-miss">—</span>
+        Near-Miss
+      </button>
+      <button class="t-btn" id="tbtn-yn" onclick="tbtnClick('yn')">
+        <span class="t-count" id="tc-yn">—</span>
+        Ja / Nein
+      </button>
+    </div>
+
+    <p class="lead reveal">
+      Reichte nicht. Also entstand ein Ökosystem aus Ja und Nein.
+    </p>
+
   </div>
-  <div class="contact-science">Mustafa Erdal · EarnOS · Proof of Observation</div>
-  <p class="contact-science" style="margin-top:0.5rem;font-size:0.65rem;color:var(--dim)">
-    Universities — contact us. This field needs minds.
-  </p>
 </section>
 
+<!-- ══════════════════════════════════════════════
+     PAPER: Das Ökosystem
+═══════════════════════════════════════════════ -->
+<section class="paper" id="kosmos">
+  <div class="inner" style="text-align:center;">
+
+    <span class="eyebrow">05 · Das Ökosystem / The Ecosystem</span>
+    <div class="divider" style="margin:2rem auto;"></div>
+
+    <h2 class="mid reveal">Viele kleine Ja und Nein.<br>Ein lebender Kosmos.</h2>
+
+    <p class="lead reveal" style="text-align:left;">
+      Jede Lampe ist ein Worker. Ein Kryptograf. Ein Urteil.
+      Grün = Signal gefunden. Lila = analysiert.
+      Gelb = Near-Miss. Rot = Nichts — aber auch das ist Information.
+    </p>
+
+    <div class="lamp-grid reveal" id="lamp-grid">
+      <!-- filled by JS -->
+    </div>
+    <div class="lamp-label reveal" id="lamp-label">Lade Kosmos...</div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     DARK: Das alles ergibt
+═══════════════════════════════════════════════ -->
+<section class="dark" style="padding: 4rem 2rem;">
+  <div class="inner" style="text-align:center;">
+
+    <span class="eyebrow">06 · Das Ergebnis / The Result</span>
+
+    <h2 class="mid reveal" style="margin-bottom: 3rem;">
+      Das alles ergibt<br>ein Uhrwerk.
+    </h2>
+
+    <div class="gears-wrap reveal">
+
+      <!-- Gear 1: large center -->
+      <div class="gear gear-1">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <g fill="none" stroke="rgba(124,58,237,0.7)" stroke-width="2">
+            <circle cx="60" cy="60" r="30"/>
+            <circle cx="60" cy="60" r="15"/>
+            <g id="teeth1">
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(30 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(60 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(90 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(120 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(150 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(180 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(210 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(240 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(270 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(300 60 60)"/>
+              <rect x="57" y="5" width="6" height="14" rx="2" fill="rgba(124,58,237,0.5)" transform="rotate(330 60 60)"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Gear 2: medium left -->
+      <div class="gear gear-2">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <g fill="none" stroke="rgba(16,185,129,0.6)" stroke-width="1.5">
+            <circle cx="40" cy="40" r="20"/>
+            <circle cx="40" cy="40" r="10"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(45 40 40)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(90 40 40)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(135 40 40)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(180 40 40)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(225 40 40)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(270 40 40)"/>
+            <rect x="37" y="5" width="6" height="10" rx="2" fill="rgba(16,185,129,0.4)" transform="rotate(315 40 40)"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Gear 3: small right -->
+      <div class="gear gear-3">
+        <svg width="60" height="60" viewBox="0 0 60 60">
+          <g fill="none" stroke="rgba(245,158,11,0.6)" stroke-width="1.5">
+            <circle cx="30" cy="30" r="15"/>
+            <circle cx="30" cy="30" r="7"/>
+            <rect x="27" y="3" width="6" height="9" rx="2" fill="rgba(245,158,11,0.4)"/>
+            <rect x="27" y="3" width="6" height="9" rx="2" fill="rgba(245,158,11,0.4)" transform="rotate(60 30 30)"/>
+            <rect x="27" y="3" width="6" height="9" rx="2" fill="rgba(245,158,11,0.4)" transform="rotate(120 30 30)"/>
+            <rect x="27" y="3" width="6" height="9" rx="2" fill="rgba(245,158,11,0.4)" transform="rotate(180 30 30)"/>
+            <rect x="27" y="3" width="6" height="9" rx="2" fill="rgba(245,158,11,0.4)" transform="rotate(240 30 30)"/>
+            <rect x="27" y="3" width="6" height="9" rx="2" fill="rgba(245,158,11,0.4)" transform="rotate(300 30 30)"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Gear 4 -->
+      <div class="gear gear-4">
+        <svg width="50" height="50" viewBox="0 0 50 50">
+          <g fill="none" stroke="rgba(124,58,237,0.4)" stroke-width="1">
+            <circle cx="25" cy="25" r="12"/>
+            <circle cx="25" cy="25" r="6"/>
+            <rect x="22" y="2" width="6" height="8" rx="2" fill="rgba(124,58,237,0.3)"/>
+            <rect x="22" y="2" width="6" height="8" rx="2" fill="rgba(124,58,237,0.3)" transform="rotate(72 25 25)"/>
+            <rect x="22" y="2" width="6" height="8" rx="2" fill="rgba(124,58,237,0.3)" transform="rotate(144 25 25)"/>
+            <rect x="22" y="2" width="6" height="8" rx="2" fill="rgba(124,58,237,0.3)" transform="rotate(216 25 25)"/>
+            <rect x="22" y="2" width="6" height="8" rx="2" fill="rgba(124,58,237,0.3)" transform="rotate(288 25 25)"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Gear 5 -->
+      <div class="gear gear-5">
+        <svg width="70" height="70" viewBox="0 0 70 70">
+          <g fill="none" stroke="rgba(16,185,129,0.4)" stroke-width="1.5">
+            <circle cx="35" cy="35" r="22"/>
+            <circle cx="35" cy="35" r="11"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(36 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(72 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(108 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(144 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(180 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(216 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(252 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(288 35 35)"/>
+            <rect x="32" y="3" width="6" height="10" rx="2" fill="rgba(16,185,129,0.3)" transform="rotate(324 35 35)"/>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+
+    <p class="gears-caption reveal">
+      Kryptografen · Ämter · Zitadellen · Welten · Ein Kosmos
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     DARK: Erkenntnisse + Raumzeichner
+═══════════════════════════════════════════════ -->
+<section class="dark" id="erkenntnisse">
+  <div class="wide">
+
+    <span class="eyebrow">07 · Unsere Erkenntnisse / Our Findings</span>
+
+    <h2 class="mid reveal" style="margin-top:1.5rem;">
+      Was macht Bitcoin<br>außergewöhnlich?
+    </h2>
+
+    <p class="lead reveal">
+      Nach monatelanger Analyse von 21.953 Patoshi-Blöcken, 8 Epochen,
+      und einem Ökosystem aus über 180 Workern zeigt sich ein Muster
+      das die Frage neu stellt.
+    </p>
+
+    <table class="epoch-table reveal" id="epoch-table">
+      <thead>
+        <tr>
+          <th>Epoche</th>
+          <th>Blöcke</th>
+          <th>Zone-0 Rate</th>
+          <th>Verteilung</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody id="epoch-tbody">
+        <tr><td colspan="5" style="color:var(--dim); text-align:center; padding: 2rem;">Lade Epochen-Daten...</td></tr>
+      </tbody>
+    </table>
+
+    <p class="lead reveal" style="margin-top: 2rem;">
+      E1 (Satoshi) hat die <strong>niedrigste Difficulty aller Zeiten</strong> —
+      und sollte statistisch Zone-0 dominieren. Tut er nicht.
+      Er liegt 72% unter der physikalischen Erwartung.
+      <strong>Das ist kein Zufall. Das ist ein Fingerabdruck.</strong>
+    </p>
+
+    <!-- Raumzeichner -->
+    <h2 class="mid reveal" style="margin-top: 4rem;">Dann haben wir<br>Raumzeichner.</h2>
+
+    <p class="lead reveal">
+      Jeder Raumzeichner ist ein Fenster in eine andere Dimension der gleichen Frage.
+      Alle zusammen zeigen: <strong>der Raum ist nicht zufällig</strong>.
+    </p>
+
+    <div class="raum-grid reveal" id="raum-grid">
+      <div class="raum-box">
+        <div class="raum-box-title">🌍 Welt7 — Epochen-Scanner</div>
+        <div class="raum-box-body" id="rz-welt7">lädt...</div>
+      </div>
+      <div class="raum-box">
+        <div class="raum-box-title">🧪 Destillateur — ASIC-Subtraktion</div>
+        <div class="raum-box-body" id="rz-dest">lädt...</div>
+      </div>
+      <div class="raum-box">
+        <div class="raum-box-title">🔬 Anomalie — Delta-Kurve</div>
+        <div class="raum-box-body" id="rz-ano">lädt...</div>
+      </div>
+      <div class="raum-box">
+        <div class="raum-box-title">🍎 Mac-Scanner — E2 Übergang</div>
+        <div class="raum-box-body" id="rz-mac">lädt...</div>
+      </div>
+      <div class="raum-box">
+        <div class="raum-box-title">🗺️ Satoshi-Raum — Formel-Beweis</div>
+        <div class="raum-box-body" id="rz-sat">lädt...</div>
+      </div>
+      <div class="raum-box">
+        <div class="raum-box-title">🔀 Patoshi-Merger — Exit-Kurve</div>
+        <div class="raum-box-body" id="rz-pat">lädt...</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PAPER: Der Coin
+═══════════════════════════════════════════════ -->
+<section class="paper" id="coin">
+  <div class="inner">
+
+    <span class="eyebrow">08 · Der Coin / The Coin</span>
+    <div class="divider"></div>
+
+    <div class="syn-hero reveal">
+      <div class="syn-logo-wrap">
+        <img src="syn-logo.svg" alt="SYN">
+      </div>
+      <div class="syn-info">
+        <div class="syn-name">Synergy</div>
+        <div class="syn-ticker">SYN · SOLANA · 21.000.000</div>
+        <div class="syn-stats">
+          <div class="syn-stat">
+            <div class="syn-stat-val">21,000,000</div>
+            <div class="syn-stat-lbl">MAX SUPPLY</div>
+          </div>
+          <div class="syn-stat">
+            <div class="syn-stat-val">Proof of Observation</div>
+            <div class="syn-stat-lbl">CONSENSUS</div>
+          </div>
+          <div class="syn-stat">
+            <div class="syn-stat-val">20.03.2026</div>
+            <div class="syn-stat-lbl">MINT DATE</div>
+          </div>
+          <div class="syn-stat">
+            <div class="syn-stat-val">Solana</div>
+            <div class="syn-stat-lbl">CHAIN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="lead reveal">
+      Der Coin ist keine Spekulation. Er ist der Beweis dass das System
+      existiert — und wächst. <strong>Wer mined, beobachtet.</strong>
+      Wer beobachtet, trägt bei. Wer beiträgt, verdient Synergy.
+    </p>
+
+    <p class="lead reveal" style="font-size:0.8rem; font-family: monospace; background: rgba(0,0,0,0.06); padding: 1rem; border-radius: 4px; word-break: break-all;">
+      GaFBZLoY8FQNuaVRk5QPXNCoqV5mFAv2MkrtTNJP5EQX
+    </p>
+
+    <div class="fin-box reveal">
+      <p style="color: #8b7355; font-size: 0.8rem; letter-spacing: 0.05em;">
+        Finanziell: Wie ist er abgesichert?<br>
+        <em>Das klären wir wenn das System etwas steigt.</em><br>
+        Die Forschung kommt zuerst. Der Wert folgt der Wahrheit.
+      </p>
+    </div>
+
+    <div style="text-align:center; margin-top: 3rem;">
+      <a href="mine.html" class="btn btn-primary" style="font-size:1rem; padding: 1rem 3rem; text-decoration:none; background: #7c3aed; color: white; border-radius: 6px; letter-spacing: 0.05em;">
+        Jetzt Minen — Enter the Cosmos →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════════ -->
+<section class="dark" id="contact" style="padding: 5rem 2rem; text-align:center;">
+  <div class="inner reveal">
+    <span class="eyebrow">Kontakt · Privat finanzierte Wissenschaft</span>
+    <p class="lead" style="max-width:500px; margin: 1rem auto 2rem;">
+      Das ist privat finanzierte wissenschaftliche Forschung.
+      Universitäten, Forscher, Gleichgesinnte — meldet euch.
+    </p>
+    <div class="contact-grid" style="justify-content:center;">
+      <a href="tel:+4917672695482"             class="c-pill">📞 +49 176 72695482</a>
+      <a href="mailto:mustafa.erdal@outlook.de" class="c-pill">✉ mustafa.erdal@outlook.de</a>
+      <a href="https://www.instagram.com/musti_eeeee" target="_blank" class="c-pill">◎ @musti_eeeee</a>
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.65rem; color:var(--dim); letter-spacing:0.1em;">
+      Mustafa Erdal · EarnOS · Proof of Observation
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
   EarnOS · Proof of Observation · The Cosmos is the Miner
   <br><br>
-  <span style="color:var(--dim)">
-    "Was Satoshi a human, an AI — or a system that moved through realities until it became something?"
+  <span style="color:var(--dim); font-style:italic;">
+    „War Satoshi ein Mensch, eine KI — oder ein System das sich durch Wirklichkeiten bewegte,
+    bis es zu etwas wurde?"
   </span>
 </footer>
 
+<!-- ══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
 <script>
-// ── Starfield Canvas ──────────────────────────────────────────
+// ── Starfield ──────────────────────────────────────────────────
 const canvas = document.getElementById('canvas');
-const ctx    = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 let W, H, stars = [];
 
-function resize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
 
 function makeStar() {
-  return {
-    x: Math.random() * W,
-    y: Math.random() * H,
-    r: Math.random() * 1.2 + 0.2,
-    a: Math.random(),
-    speed: Math.random() * 0.003 + 0.001,
-    drift: (Math.random() - 0.5) * 0.15,
-  };
+  return { x: Math.random()*W, y: Math.random()*H,
+           r: Math.random()*1.1+0.2, a: Math.random(),
+           speed: Math.random()*0.003+0.001, drift: (Math.random()-0.5)*0.12 };
 }
+for (let i = 0; i < 220; i++) stars.push(makeStar());
 
-for (let i = 0; i < 200; i++) stars.push(makeStar());
-
-// Floating particles (purple/teal)
-const particles = [];
-for (let i = 0; i < 30; i++) {
-  particles.push({
-    x: Math.random() * W,
-    y: Math.random() * H,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
-    r: Math.random() * 2 + 0.5,
-    color: Math.random() > 0.5 ? '#7c3aed' : '#10b981',
-    a: Math.random() * 0.5 + 0.1,
-  });
-}
+const particles = Array.from({length:25}, () => ({
+  x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
+  vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+  r: Math.random()*1.8+0.4,
+  color: Math.random()>0.5 ? '#7c3aed' : '#10b981',
+  a: Math.random()*0.4+0.1,
+}));
 
 function draw() {
-  ctx.clearRect(0, 0, W, H);
-
-  // Stars
+  ctx.clearRect(0,0,W,H);
   for (const s of stars) {
-    s.a += s.speed;
-    if (s.a > 1) s.a = 0;
-    s.x += s.drift;
-    if (s.x < 0) s.x = W;
-    if (s.x > W) s.x = 0;
-
-    const alpha = Math.sin(s.a * Math.PI) * 0.8;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(226,232,240,${alpha})`;
-    ctx.fill();
+    s.a += s.speed; if (s.a>1) s.a=0;
+    s.x += s.drift; if (s.x<0) s.x=W; if (s.x>W) s.x=0;
+    const al = Math.sin(s.a*Math.PI)*0.7;
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(226,232,240,${al})`; ctx.fill();
   }
-
-  // Floating particles
   for (const p of particles) {
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = p.color + Math.floor(p.a * 255).toString(16).padStart(2,'0');
+    p.x+=p.vx; p.y+=p.vy;
+    if (p.x<0) p.x=W; if (p.x>W) p.x=0;
+    if (p.y<0) p.y=H; if (p.y>H) p.y=0;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = p.color + Math.floor(p.a*255).toString(16).padStart(2,'0');
     ctx.fill();
   }
-
   requestAnimationFrame(draw);
 }
 draw();
 
-// ── Live WebSocket Log ────────────────────────────────────────
-const logEl    = document.getElementById('terminal-log');
-const connDot  = document.getElementById('conn-dot');
-const connLbl  = document.getElementById('conn-label');
-const WS_URL   = 'ws://46.224.239.18:3001';
-const MAX_LINES = 80;
+// ── Intersection Observer — reveal ────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-const SKIP = ['[D:', '[B:', '[..'];
-const HIGHLIGHT = ['TREFFER','NEAR_MISS','FINGERABDRUCK','BLOCK','KOSMOS','ZITADELLE','URKNALL','WELTPOLIZEI','WELTENARCHIV','KORRELATION','GEGENPOOLS'];
-const GOLD_KW   = ['Near-Miss','NEAR_MISS','Treffer','near miss','NEAR'];
-const PURPLE_KW = ['WELT5','Greifer','Korrelation','Signalmesser','Doktor','Gegenpools','Weltpolizei','Weltenarchiv'];
+// ── YA / NEIN Voting ──────────────────────────────────────────
+let votes = JSON.parse(localStorage.getItem('syn_votes') || '{"ja":0,"nein":0}');
+let myVote = localStorage.getItem('syn_my_vote') || null;
 
-function classifyLine(line) {
-  if (line.startsWith('[GC]')) return 'gc';
-  if (GOLD_KW.some(k => line.includes(k))) return 'nm';
-  if (HIGHLIGHT.some(k => line.includes(k))) return 'sys';
-  if (PURPLE_KW.some(k => line.includes(k))) return 'w5';
-  if (line.length > 5) return 'hi';
-  return '';
+function vote(side) {
+  if (myVote) return;
+  myVote = side;
+  votes[side] = (votes[side]||0) + 1;
+  localStorage.setItem('syn_votes', JSON.stringify(votes));
+  localStorage.setItem('syn_my_vote', side);
+  updateVoteUI();
+  // Ping server
+  fetch('/api/vote', { method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({side, ts: Date.now()})
+  }).catch(()=>{});
 }
 
-function addLine(text) {
-  const cls = classifyLine(text);
-  if (!cls) return;                              // skip empty
-  if (SKIP.some(s => text.startsWith(s))) return; // skip digital
-
-  const div = document.createElement('div');
-  div.className = 'tlog ' + cls + ' fade-in';
-
-  const ts = document.createElement('span');
-  ts.className = 'ts';
-  ts.textContent = new Date().toISOString().substring(11, 19);
-
-  div.appendChild(ts);
-  div.appendChild(document.createTextNode(text.substring(0, 140)));
-  logEl.appendChild(div);
-
-  // Trim
-  while (logEl.children.length > MAX_LINES) {
-    logEl.removeChild(logEl.firstChild);
+function updateVoteUI() {
+  const ja   = document.getElementById('btn-ja');
+  const nein = document.getElementById('btn-nein');
+  const ctr  = document.getElementById('yn-counter');
+  const tot  = (votes.ja||0) + (votes.nein||0);
+  if (myVote === 'ja')   { ja.classList.add('active'); }
+  if (myVote === 'nein') { nein.classList.add('active'); }
+  if (tot > 0) {
+    ctr.textContent = `${votes.ja||0} × JA  ·  ${votes.nein||0} × NEIN  ·  ${tot} beobachten`;
   }
-  logEl.scrollTop = logEl.scrollHeight;
+}
+updateVoteUI();
+
+// ── 3 Buttons counter ─────────────────────────────────────────
+let tbClicks = JSON.parse(localStorage.getItem('syn_tb') || '{"neural":0,"miss":0,"yn":0}');
+function tbtnClick(k) {
+  tbClicks[k] = (tbClicks[k]||0) + 1;
+  localStorage.setItem('syn_tb', JSON.stringify(tbClicks));
+  document.getElementById('tbtn-'+k).classList.add('active');
+  setTimeout(() => document.getElementById('tbtn-'+k).classList.remove('active'), 600);
+  updateTBUI();
+}
+function updateTBUI() {
+  document.getElementById('tc-neural').textContent = tbClicks.neural || 0;
+  document.getElementById('tc-miss').textContent   = tbClicks.miss   || 0;
+  document.getElementById('tc-yn').textContent     = tbClicks.yn     || 0;
+}
+updateTBUI();
+
+// ── Lamp Grid ─────────────────────────────────────────────────
+const LAMP_COUNT = 120;
+const lampGrid = document.getElementById('lamp-grid');
+const lamps = [];
+for (let i = 0; i < LAMP_COUNT; i++) {
+  const d = document.createElement('div');
+  d.className = 'lamp';
+  lampGrid.appendChild(d);
+  lamps.push(d);
 }
 
-// Polling via /api/stream (kein ws:// → kein Mixed Content)
-let pollOffset = 0;
-let pollErrors = 0;
-
-async function connect() {
-  connDot.className   = 'dot yellow pulse';
-  connLbl.textContent = 'connecting...';
-  await poll();
+const LAMP_CLASSES = ['on-g','on-p','on-y','on-r'];
+function animateLamps(aktiveZonen, nearMiss, signal) {
+  // ~30% on at any time
+  const activeCount = Math.round(LAMP_COUNT * 0.28) + Math.round((signal||0) * 0.1 * LAMP_COUNT);
+  for (let i = 0; i < LAMP_COUNT; i++) {
+    lamps[i].className = 'lamp';
+    if (Math.random() < 0.28) {
+      const cls = Math.random() < 0.5 ? 'on-g' :
+                  Math.random() < 0.5 ? 'on-p' :
+                  Math.random() < 0.5 ? 'on-y' : 'on-r';
+      lamps[i].className = 'lamp ' + cls;
+    }
+  }
 }
+animateLamps();
+setInterval(() => animateLamps(), 800);
 
-async function poll() {
+// ── Load Live Data ─────────────────────────────────────────────
+async function loadLiveData() {
   try {
-    const r = await fetch(`/api/stream?offset=${pollOffset}`);
+    const r = await fetch('http://46.224.239.18:3003/status');
     const d = await r.json();
 
-    if (d.lines && d.lines.length > 0) {
-      for (const line of d.lines) {
-        addLine(line);
-        extractBlockHeight(line);
-      }
-      pollOffset = d.total;
+    // ── Epoch table ──
+    const mac = d.mac_scanner || (d.gegenlaeufer ? {epochen: d.gegenlaeufer.epochen} : {});
+    const epochen = mac.epochen || (d.gegenlaeufer||{}).epochen || {};
+    const tbody = document.getElementById('epoch-tbody');
+    const order = ['E1_SATOSHI_0-10k','E2_FRÜH_10-50k','E3_CPU_50-150k',
+                   'E4_GPU_150-250k','E5_FRÜH_ASIC_250-400k',
+                   'E6_ASIC_400-600k','E7_MODERN_600-800k','E8_HEUTE_800k+'];
+    const signals = {
+      'E1_SATOSHI_0-10k': '⚡ FINGERABDRUCK',
+      'E2_FRÜH_10-50k':   '📈 ÜBERGANG',
+      'E3_CPU_50-150k':   '🔴 SEQUENZIELL',
+      'E4_GPU_150-250k':  '✅ NORMAL',
+    };
+    let rows = '';
+    for (const key of order) {
+      const ep = epochen[key];
+      if (!ep || !ep.total) continue;
+      const rate = (ep.z0 / ep.total * 100).toFixed(1);
+      const barW = Math.round(ep.z0 / ep.total * 100);
+      const sig  = signals[key] || '';
+      rows += `<tr>
+        <td>${key.replace(/_/g,' ')}</td>
+        <td class="epoch-val">${ep.total.toLocaleString()}</td>
+        <td class="epoch-val">${rate}%</td>
+        <td class="epoch-bar-wrap"><div class="epoch-bar" style="width:${barW}%"></div></td>
+        <td class="epoch-anom">${sig}</td>
+      </tr>`;
     }
+    if (rows) tbody.innerHTML = rows;
 
-    connDot.className   = 'dot green pulse';
-    connLbl.textContent = 'live · hetzner';
-    pollErrors = 0;
-  } catch(_) {
-    pollErrors++;
-    if (pollErrors > 3) {
-      connDot.className   = 'dot red';
-      connLbl.textContent = 'reconnecting...';
+    // ── Stream epochen ──
+    const stEl = document.getElementById('stream-epochen');
+    let streamHtml = '';
+    for (const key of order) {
+      const ep = epochen[key];
+      if (!ep || !ep.total) continue;
+      const rate = (ep.z0 / ep.total * 100).toFixed(1);
+      const bar = '█'.repeat(Math.round(ep.z0/ep.total*20)) + '░'.repeat(20-Math.round(ep.z0/ep.total*20));
+      const col = parseFloat(rate) < 10 ? '#7c3aed' : parseFloat(rate) > 70 ? '#ef4444' : '#10b981';
+      streamHtml += `<div style="color:${col}; margin-bottom:0.3rem;">${key.padEnd(28,' ')} │ ${bar} │ ${rate}%  (${ep.total.toLocaleString()} Blöcke)</div>`;
     }
+    if (streamHtml) stEl.innerHTML = streamHtml;
+
+    // ── Lamp activity ──
+    const aktiveZonen = (d.zonenrat||{}).aktiveZonen || [];
+    animateLamps(aktiveZonen.length, 0, 0);
+    document.getElementById('lamp-label').textContent =
+      `${aktiveZonen.length} aktive Zonen · ${Object.keys(epochen).length} Epochen analysiert · Kosmos lebt`;
+
+    // ── Raumzeichner boxes ──
+    const welt7 = d.gegenlaeufer || {};
+    const dest  = {};
+    const ano   = {};
+
+    fillRaum('rz-welt7',
+      welt7.aktuelleHöhe ? `Block: ${welt7.aktuelleHöhe?.toLocaleString()}\nZyklus: ${welt7.zyklus||0}\nEpochen: ${Object.keys(welt7.epochen||{}).length}/8 analysiert` : 'Sammelt Daten...');
+
+    const macEp = mac.epochen || {};
+    const e1 = macEp['E1_SATOSHI_0-10k'];
+    const e2 = macEp['E2_FRÜH_10-50k'];
+    const e3 = macEp['E3_CPU_50-150k'];
+    fillRaum('rz-mac',
+      e1 ? `E1 Satoshi: ${(e1.z0/e1.total*100).toFixed(1)}%  (${e1.total} Blöcke)\n${e2 ? 'E2 Übergang: '+(e2.z0/e2.total*100).toFixed(1)+'%  ('+e2.total+' Blöcke)' : 'E2: läuft...'}\n${e3 ? 'E3 CPU:      '+(e3.z0/e3.total*100).toFixed(1)+'%  ('+e3.total+' Blöcke)' : ''}` : 'Sammelt...');
+
+    fillRaum('rz-dest', 'ASIC-Subtraktion aktiv\nEntfernt Hardware-Baseline\nResiduum = Satoshi-Signal');
+    fillRaum('rz-ano',  'Erwartete Zone-0 vs Gemessene\nE1-Anomalie: -72%\nURTEIL: PATOSHI_FINGERABDRUCK');
+    fillRaum('rz-sat',  'Difficulty × Nonce × Delta\nFormel-Suche: f(diff) = slope × log₁₀\nSammelt E1-Blöcke...');
+    fillRaum('rz-pat',  'CSV: 21.953 Patoshi-Blöcke\nE2 Patoshi-Anteil: ~36%\nFremd-Miner: sequenziell');
+
+  } catch(e) {
+    // fallback — fill with static data
+    fillRaum('rz-welt7',  'Kosmos analysiert...');
+    fillRaum('rz-dest',   'ASIC-Baseline Subtraktion...');
+    fillRaum('rz-ano',    'Anomalie-Zeichner aktiv...');
+    fillRaum('rz-mac',    'Mac-Scanner übermittelt...');
+    fillRaum('rz-sat',    'Satoshi-Raum zeichnet...');
+    fillRaum('rz-pat',    'Patoshi-Merger analysiert...');
   }
-  setTimeout(poll, 3000);
 }
 
-// ── Cosmic Clock — sync with live block height ────────────────
-const clockBlockEl = document.getElementById('clock-block');
-function updateClock(blockHeight) {
-  if (blockHeight && blockHeight > 0) {
-    clockBlockEl.textContent = blockHeight.toLocaleString();
-  }
+function fillRaum(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
 }
 
-// Extract block height from log lines
-function extractBlockHeight(line) {
-  const m = line.match(/Block\s+(\d{5,7})/i) || line.match(/Blk\s*(\d{5,7})/) || line.match(/#(\d{6,7})/);
-  if (m) updateClock(parseInt(m[1]));
-}
-
-// Fetch live stats from Hetzner every 30s for block height
-async function fetchStats() {
-  try {
-    const r = await fetch('http://46.224.239.18:3001/miner/stats');
-    const d = await r.json();
-    if (d.synergy?.difficulty) {/* ignore */}
-  } catch(_) {}
-}
-setInterval(fetchStats, 30000);
-
-// Demo lines while connecting (replaces stale state if no WS)
-const DEMO = [
-  '🎯 [WELT5.1:GREIFER] Zone 0: 0x00000000–0x0fffffff | Gewicht 82%',
-  '[GC] Heap: 23MB',
-  '🔬 [KORRELATION] Runde 4 | 1247 Blöcke | r=0.031 GEMISCHT',
-  '🚔 [WELTPOLIZEI] Tick 12 | Heap: 380MB [GRUEN] | NearMiss: 3 | Bits: 114',
-  '💡 [KRYPTOGRAF] FINGERABDRUCK-Signal | Konfidenz 71%',
-  '⚗️  [GEGENPOOLS] CF=0.0023 | Baseline 1M Jahre → 2.300 Jahre',
-  '[D:W152] 63305647',
-  '📚 [WELTENARCHIV] Runde 1 | 47 Welten archiviert | NM:12',
-  '🏛️  [ZITADELLE] Block 3 | 28 Delegierte | Konsens: 0.71',
-];
-let di = 0;
-function demoTick() {
-  addLine(DEMO[di % DEMO.length]);
-  di++;
-  setTimeout(demoTick, 2000 + Math.random() * 2000);
-}
-demoTick();
-
-connect();
+loadLiveData();
+setInterval(loadLiveData, 30000);
 </script>
+
 </body>
 </html>
