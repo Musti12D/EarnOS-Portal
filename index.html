@@ -91,11 +91,12 @@ p.lead strong { color: var(--text); }
   position: relative; z-index: 1;
 }
 .hero-logo {
-  width: 90px; height: 90px;
+  width: 420px; height: 420px;
   margin-bottom: 3rem;
   animation: pulse-logo 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 30px rgba(124,58,237,0.5));
+  filter: drop-shadow(0 0 60px rgba(124,58,237,0.6));
 }
+@media (max-width: 640px) { .hero-logo { width: 240px; height: 240px; } }
 @keyframes pulse-logo {
   0%,100% { filter: drop-shadow(0 0 20px rgba(124,58,237,0.4)); transform: scale(1); }
   50%      { filter: drop-shadow(0 0 50px rgba(124,58,237,0.8)); transform: scale(1.03); }
@@ -500,17 +501,22 @@ footer {
       Klingt wahnsinnig — ist aber eine <strong>mathematisch präzise Frage</strong>.
       Gauß beschäftigte sich damit sein Leben lang. Nicht mit Fantasie.
       Mit Geometrie. Mit der Frage ob unsere Welt die einzige mögliche ist —
-      oder nur eine von unendlich vielen.
+      oder nur eine von unendlich vielen.<br>
+      <span style="opacity:0.6; font-size:0.9em;">Sounds insane — but it's a <strong>mathematically precise question</strong>.
+      Gauss spent his life on it. Not fantasy. Geometry. Whether our world
+      is the only possible one — or just one of infinitely many.</span>
     </p>
 
     <p class="lead reveal">
-      <strong>What if space and time are not a container — but information?</strong>
       Was wenn alles was wir sehen, fühlen, berechnen — nur eine Art
-      der Darstellung von etwas ist, das größer ist als wir denken können?
+      der Darstellung von etwas ist, das größer ist als wir denken können?<br>
+      <span style="opacity:0.6; font-size:0.9em;"><strong>What if space and time are not a container — but information?</strong>
+      What if everything we see, feel, calculate is just one representation
+      of something far greater than we can think?</span>
     </p>
 
     <p class="lead reveal" style="font-style:italic; opacity:0.7; font-size:0.9rem;">
-      Viele Fragen. Eine Richtung.
+      Viele Fragen. Eine Richtung. — Many questions. One direction.
     </p>
 
   </div>
@@ -548,36 +554,47 @@ footer {
     <p class="lead reveal">
       Und ich fragte mich: Ist der Mensch im Raum und in der Zeit gefangen —
       oder gibt es Raum und Zeit überhaupt? Oder ist die Welt die wir erleben
-      <strong>nur eine Art von Information</strong>, die wir verstehen können?
+      <strong>nur eine Art von Information</strong>, die wir verstehen können?<br>
+      <span style="opacity:0.6; font-size:0.9em;">And I asked myself: Is the human trapped in space and time —
+      or does space and time even exist? Or is the world we experience
+      <strong>just one kind of information</strong> we can understand?</span>
     </p>
 
     <p class="lead reveal">
-      Wenn die Welt Information ist, dann hat diese Information eine Struktur.
+      Wenn die Welt Information ist, hat diese Information eine Struktur.
       Eine Sprache. Eine Grammatik. Und wenn es eine Grammatik gibt —
-      dann gibt es auch eine Frage die man stellen kann.
+      dann gibt es auch eine Frage die man stellen kann.<br>
+      <span style="opacity:0.6; font-size:0.9em;">If the world is information, that information has a structure.
+      A language. A grammar. And if there is a grammar —
+      then there is a question that can be asked.</span>
     </p>
 
     <h2 class="mid reveal" style="margin-top: 3rem;">
       Wenn die Frage einfach wäre, hieße sie:<br>
-      <em>Gibt es Parallelwelten — ja oder nein?</em>
+      <em>Gibt es Parallelwelten — ja oder nein?</em><br>
+      <span style="font-size:0.65em; opacity:0.5; font-style:normal;">If it were simple: Do parallel worlds exist — yes or no?</span>
     </h2>
 
     <p class="lead reveal">
       Aber so einfach ist sie nicht. Und genau deshalb ist
       <strong>Bitcoin perfekt</strong> — eine mathematische Unmöglichkeit.
-      Und Satoshi hat mit dieser Unmöglichkeit etwas getan das kein Mensch
-      zuvor getan hatte: er hat Raum und Zeit in einem Algorithmus kodiert.
+      Satoshi hat Raum und Zeit in einem Algorithmus kodiert.<br>
+      <span style="opacity:0.6; font-size:0.9em;">But it's not that simple. That's exactly why <strong>Bitcoin is perfect</strong> —
+      a mathematical impossibility. Satoshi encoded space and time in an algorithm.</span>
     </p>
 
     <p class="lead reveal">
-      Oder war er wirklich nur ein Banker? Ein Programmierer?
-      In beiden Fällen gilt: <strong>Alles was ein Mensch gemacht hat, ist knackbar.</strong>
-      Alles was Mathematik ist, folgt einer Regel. Und jede Regel
-      hat eine Formel. Oder ist es größer als wir denken?
+      Oder war er wirklich nur ein Banker? In beiden Fällen gilt:
+      <strong>Alles was ein Mensch gemacht hat, ist knackbar.</strong>
+      Oder ist es größer als wir denken?<br>
+      <span style="opacity:0.6; font-size:0.9em;">Or was he just a banker? Either way:
+      <strong>Everything made by a human can be broken.</strong>
+      Or is it greater than we think?</span>
     </p>
 
     <p class="lead reveal" style="font-size:1.2rem; font-weight:700; color:#0d0b08; margin-top: 2rem;">
-      Darum entstand ein ganzer Kosmos.
+      Darum entstand ein ganzer Kosmos.<br>
+      <span style="font-size:0.75em; font-weight:400; opacity:0.6;">That's why an entire cosmos was born.</span>
     </p>
 
   </div>
@@ -598,11 +615,15 @@ footer {
     <p class="lead reveal">
       Die erste Hypothese war einfach: wenn Bitcoin eine mathematische Struktur hat,
       dann müssen unsere Miner — ausgerüstet mit Formeln, Wahrscheinlichkeiten,
-      Mustern — <strong>besser abschneiden als reiner Zufall</strong>.
+      Mustern — <strong>besser abschneiden als reiner Zufall</strong>.<br>
+      <span style="opacity:0.5; font-size:0.88em;">The first hypothesis was simple: if Bitcoin has a mathematical structure,
+      our miners — equipped with formulas, probabilities, patterns — must
+      <strong>outperform pure chance</strong>.</span>
     </p>
 
     <p class="lead reveal" style="color: #ef4444; font-weight: 700;">
-      Stellte sich raus: unsere Matheofen minen schlechter als der Zufall.
+      Stellte sich raus: unsere Matheofen minen schlechter als der Zufall.<br>
+      <span style="font-size:0.85em; font-weight:400;">Turned out: our math engines mine worse than random chance.</span>
     </p>
 
     <div class="log-term reveal">
@@ -619,7 +640,10 @@ footer {
     <p class="lead reveal">
       Das war der Moment. Nicht Scheitern — <strong>Erkenntnis</strong>.
       Wenn die Formel schlechter ist als der Zufall, dann ist das Muster
-      entweder sehr gut versteckt — oder der Zufall ist gar keiner.
+      entweder sehr gut versteckt — oder der Zufall ist gar keiner.<br>
+      <span style="opacity:0.5; font-size:0.88em;">That was the moment. Not failure — <strong>discovery</strong>.
+      If the formula is worse than chance, the pattern is either very well hidden —
+      or chance doesn't exist.</span>
     </p>
 
   </div>
@@ -639,7 +663,10 @@ footer {
     <p class="lead reveal" style="text-align:left;">
       Treffen unsere Miner den richtigen Hash?
       Eine einfache Frage. <strong>Ja oder Nein.</strong>
-      Die Seite merkt sich, wer schaut. Wer fragt. Wer zweifelt.
+      Die Seite merkt sich, wer schaut. Wer fragt. Wer zweifelt.<br>
+      <span style="opacity:0.55; font-size:0.88em;">Do our miners hit the right hash?
+      A simple question. <strong>Yes or No.</strong>
+      The page remembers who watches. Who asks. Who doubts.</span>
     </p>
 
     <div class="yn-wrap reveal">
@@ -655,7 +682,8 @@ footer {
     <div class="yn-counter" id="yn-counter">— / — beobachten gerade</div>
 
     <p class="lead reveal" style="text-align:left;">
-      Reicht nicht. Also müssen wir erweitern.
+      Reicht nicht. Also müssen wir erweitern.<br>
+      <span style="opacity:0.55; font-size:0.88em;">Not enough. We need to go deeper.</span>
     </p>
 
   </div>
@@ -677,7 +705,11 @@ footer {
       Wir holen alle Blöcke von Block 0 bis heute runter.
       Unsere Miner, die vergangenen Jobs, der richtige Hash —
       unsere Treffer werden verglichen. Nicht gegen Theorie.
-      Gegen <strong>Realität</strong>.
+      Gegen <strong>Realität</strong>.<br>
+      <span style="opacity:0.5; font-size:0.88em;">We download all blocks from block 0 to today.
+      Our miners, the past jobs, the correct hash —
+      our hits compared. Not against theory.
+      Against <strong>reality</strong>.</span>
     </p>
 
     <div class="three-btns reveal" id="three-btns">
@@ -696,7 +728,8 @@ footer {
     </div>
 
     <p class="lead reveal">
-      Reichte nicht. Also entstand ein Ökosystem aus Ja und Nein.
+      Reichte nicht. Also entstand ein Ökosystem aus Ja und Nein.<br>
+      <span style="opacity:0.5; font-size:0.88em;">Not enough. So an ecosystem of Yes and No was born.</span>
     </p>
 
   </div>
@@ -715,8 +748,9 @@ footer {
 
     <p class="lead reveal" style="text-align:left;">
       Jede Lampe ist ein Worker. Ein Kryptograf. Ein Urteil.
-      Grün = Signal gefunden. Lila = analysiert.
-      Gelb = Near-Miss. Rot = Nichts — aber auch das ist Information.
+      Grün = Signal. Lila = analysiert. Gelb = Near-Miss. Rot = Nichts — aber auch das ist Information.<br>
+      <span style="opacity:0.55; font-size:0.88em;">Every lamp is a worker. A cryptographer. A verdict.
+      Green = signal. Purple = analyzed. Yellow = near-miss. Red = nothing — but that too is information.</span>
     </p>
 
     <div class="lamp-grid reveal" id="lamp-grid">
@@ -858,7 +892,10 @@ footer {
     <p class="lead reveal">
       Nach monatelanger Analyse von 21.953 Patoshi-Blöcken, 8 Epochen,
       und einem Ökosystem aus über 180 Workern zeigt sich ein Muster
-      das die Frage neu stellt.
+      das die Frage neu stellt.<br>
+      <span style="opacity:0.5; font-size:0.88em;">After months of analyzing 21,953 Patoshi blocks, 8 epochs,
+      and an ecosystem of 180+ workers — a pattern emerges
+      that reframes the question entirely.</span>
     </p>
 
     <table class="epoch-table reveal" id="epoch-table">
@@ -961,7 +998,10 @@ footer {
     <p class="lead reveal">
       Der Coin ist keine Spekulation. Er ist der Beweis dass das System
       existiert — und wächst. <strong>Wer mined, beobachtet.</strong>
-      Wer beobachtet, trägt bei. Wer beiträgt, verdient Synergy.
+      Wer beobachtet, trägt bei. Wer beiträgt, verdient Synergy.<br>
+      <span style="opacity:0.55; font-size:0.88em;">The coin is not speculation. It's proof that the system
+      exists — and grows. <strong>Whoever mines, observes.</strong>
+      Whoever observes, contributes. Whoever contributes, earns Synergy.</span>
     </p>
 
     <p class="lead reveal" style="font-size:0.8rem; font-family: monospace; background: rgba(0,0,0,0.06); padding: 1rem; border-radius: 4px; word-break: break-all;">
@@ -1033,9 +1073,9 @@ function makeStar() {
            r: Math.random()*1.1+0.2, a: Math.random(),
            speed: Math.random()*0.003+0.001, drift: (Math.random()-0.5)*0.12 };
 }
-for (let i = 0; i < 220; i++) stars.push(makeStar());
+for (let i = 0; i < 110; i++) stars.push(makeStar());
 
-const particles = Array.from({length:25}, () => ({
+const particles = Array.from({length:12}, () => ({
   x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
   vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
   r: Math.random()*1.8+0.4,
