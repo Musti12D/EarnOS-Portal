@@ -1,0 +1,182 @@
+name: EarnOS Lücken-Satellit
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: lucken-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Lücken-Scanner
+        run: |
+          node - <<'EOF'
+          'use strict';
+          const crypto = require('crypto');
+          const http = require('http');
+
+          const SERVER   = '46.224.239.18';
+          const PORT     = 3001;
+          const BATCH    = 2_000_000;
+          const NODE_ID  = 'GA1';
+          const ZONE_SZ  = Math.floor(0xFFFFFFFF / 32);
+          const LAUFZEIT = 18 * 60 * 1000; // 18 Minuten
+          const START_TS = Date.now();
+
+          function get(path) {
+              return new Promise(resolve => {
+                  http.get({ hostname: SERVER, port: PORT, path }, res => {
+                      let raw = '';
+                      res.on('data', c => raw += c);
+                      res.on('end', () => { try { resolve(JSON.parse(raw)); } catch(_) { resolve(null); } });
+                  }).on('error', () => resolve(null));
+              });
+          }
+
+          function post(path, data) {
+              return new Promise(resolve => {
+                  const body = JSON.stringify(data);
+                  const req = http.request({
+                      hostname: SERVER, port: PORT, path, method: 'POST',
+                      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+                  }, res => { res.resume(); res.on('end', resolve); });
+                  req.on('error', resolve);
+                  req.write(body); req.end();
+              });
+          }
+
+          function scanRange(header, from, count) {
+              const h = Buffer.from(header);
+              let bestBits = 0, bestNonce = -1;
+              const survivors = [];
+              const end = Math.min((from + count) >>> 0, 0xFFFFFFFF);
+              for (let nonce = from >>> 0; nonce < end; nonce = (nonce + 1) >>> 0) {
+                  h.writeUInt32BE(nonce, 76);
+                  const buf = crypto.createHash('sha256').update(h).digest();
+                  let bits = 0;
+                  for (let j = 0; j < buf.length; j++) {
+                      const b = buf[j];
+                      if (b === 0) { bits += 8; continue; }
+                      if (b & 0x80) break; if (b & 0x40) { bits += 1; break; }
+                      if (b & 0x20) { bits += 2; break; } if (b & 0x10) { bits += 3; break; }
+                      if (b & 0x08) { bits += 4; break; } if (b & 0x04) { bits += 5; break; }
+                      if (b & 0x02) { bits += 6; break; } bits += 7; break;
+                  }
+                  if (bits > bestBits) { bestBits = bits; bestNonce = nonce; }
+                  if (bits >= 20) survivors.push({ nonce, bits });
+                  if (nonce === 0xFFFFFFFF) break;
+              }
+              return { bestBits, bestNonce, survivors: survivors.slice(0, 5) };
+          }
+
+          function buildHeader(job) {
+              try {
+                  const h = Buffer.alloc(80);
+                  h.writeUInt32LE(parseInt(job.version, 16), 0);
+                  Buffer.from(job.prevhash, 'hex').reverse().copy(h, 4);
+                  const mk = crypto.createHash('sha256').update(Buffer.from(job.coinb1 + job.coinb2, 'hex')).digest();
+                  mk.copy(h, 36);
+                  h.writeUInt32LE(parseInt(job.ntime, 16), 68);
+                  h.writeUInt32LE(parseInt(job.nbits, 16), 72);
+                  return Array.from(h);
+              } catch(_) { return null; }
+          }
+
+          async function main() {
+              console.log(`[${NODE_ID}] Lücken-Satellit gestartet — ${LAUFZEIT/60000}min Laufzeit`);
+
+              let totalScanned = 0;
+              let globalBest = 0, globalBestNonce = -1, globalBestZone = -1;
+              let globalSurvivors = [];
+
+              while (Date.now() - START_TS < LAUFZEIT) {
+                  const [job, zones, ziel] = await Promise.all([
+                      get('/api/job'),
+                      get('/api/zones'),
+                      get('/api/koordinator_ziel'),
+                  ]);
+
+                  if (!job || !job.prevhash) {
+                      console.log(`[${NODE_ID}] Kein Job, warte...`);
+                      await new Promise(r => setTimeout(r, 5000));
+                      continue;
+                  }
+
+                  const header = buildHeader(job);
+                  if (!header) continue;
+
+                  // Lücken finden: status='_' oder O mit 0 bits
+                  const lucken = [];
+                  if (zones) {
+                      for (let z = 0; z < 32; z++) {
+                          const info = zones[z] || zones[String(z)];
+                          if (!info) { lucken.push(z); continue; }
+                          if (info.status === 'O' && (info.bestBits || 0) === 0) lucken.push(z);
+                          if (info.status === '_') lucken.push(z);
+                      }
+                  }
+
+                  if (lucken.length === 0) {
+                      console.log(`[${NODE_ID}] Keine Lücken — alle Zonen abgedeckt`);
+                      await new Promise(r => setTimeout(r, 10000));
+                      continue;
+                  }
+
+                  // Cursor für erste Lücken-Zone
+                  const targetZone = lucken[0];
+                  const cursor = await get(`/api/cursor/${targetZone}`);
+                  const from = cursor && cursor.from != null ? cursor.from >>> 0 : (targetZone * ZONE_SZ) >>> 0;
+
+                  console.log(`[${NODE_ID}] Scanne Z${targetZone} ab Nonce ${from} | Lücken: ${lucken.map(z=>'Z'+z).join(' ')}`);
+
+                  const result = scanRange(header, from, BATCH);
+                  totalScanned += BATCH;
+
+                  if (result.bestBits > globalBest) {
+                      globalBest = result.bestBits;
+                      globalBestNonce = result.bestNonce;
+                      globalBestZone = targetZone;
+                      globalSurvivors = result.survivors;
+                  }
+
+                  console.log(`[${NODE_ID}] Z${targetZone}: ${result.bestBits}b @ ${result.bestNonce}`);
+
+                  // Ergebnis melden
+                  await post('/api/result', {
+                      zone: targetZone, bestBits: result.bestBits,
+                      bestNonce: result.bestNonce, scanned: BATCH, node: NODE_ID
+                  });
+
+                  // Schwarm triggern wenn ≥ 25b
+                  if (result.bestBits >= 25) {
+                      console.log(`[${NODE_ID}] ★ SCHWARM TRIGGER Z${targetZone} ${result.bestBits}b`);
+                      await post('/api/zone_update', {
+                          zone: targetZone, status: 'C', depth: 2,
+                          bestBits: result.bestBits, bestNonce: result.bestNonce,
+                          hotspot: true, survivors: result.survivors, node: NODE_ID
+                      });
+                  }
+              }
+
+              // Abschlussbericht
+              const elapsed = Math.round((Date.now() - START_TS) / 1000);
+              console.log(`[${NODE_ID}] Fertig — ${elapsed}s | ${totalScanned.toLocaleString()} Nonces | Bestes: Z${globalBestZone} ${globalBest}b @ ${globalBestNonce}`);
+
+              // Abschlussmeldung an Mini
+              await post('/api/result', {
+                  zone: globalBestZone >= 0 ? globalBestZone : 0,
+                  bestBits: globalBest, bestNonce: globalBestNonce,
+                  scanned: totalScanned, node: NODE_ID,
+                  summary: true, elapsed
+              });
+          }
+
+          main().catch(e => { console.error(e); process.exit(1); });
+          EOF
